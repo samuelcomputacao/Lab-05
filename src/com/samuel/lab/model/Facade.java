@@ -20,6 +20,7 @@ public class Facade implements SistemadeApostas{
 		this.caixa = centavos;
 		this.taxa =taxa;
 		this.cenarioController = new CenarioController();
+		this.apostaController = new ApostaController();
 	}
 
 	@Override
@@ -39,38 +40,52 @@ public class Facade implements SistemadeApostas{
 
 	@Override
 	public String exibirCenario(int id) {
-		String retorno = cenarioController.exibirCenario(id);
-		return retorno;
+		return cenarioController.exibirCenario(id);
 	}
 
 	@Override
 	public String exibirCenarios() {
-		String retorno = cenarioController.exibirCenarios();
-		return retorno;
+		return cenarioController.exibirCenarios();
 	}
 
 	@Override
-	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
-		Aposta aposta = this.apostaController.cadastrar(apostador,valor,previsao);
-		this.cenarioController.apostar(cenario,aposta);
+	public void cadastrarAposta(int cenario, String apostador, int valor, boolean previsao) {
+		this.cenarioController.apostar(cenario,this.apostaController.cadastrar(apostador,valor,previsao));
 	}
 
 	@Override
 	public int valorTotalDeApostas(int cenario) {
-		// TODO Auto-generated method stub
-		return 0;
+		return  this.cenarioController.valorTotal(cenario);
 	}
 
 	@Override
 	public int totalDeApostas(int cenario) {
-		// TODO Auto-generated method stub
-		return 0;
+		return  this.cenarioController.totalApostas(cenario);
 	}
 
 	@Override
 	public String exibeApostas(int cenario) {
-		// TODO Auto-generated method stub
-		return null;
+		return  this.cenarioController.exibirApostas(cenario);
+
+	}
+
+	@Override
+	public void fecharAposta(int cenario, boolean ocorreu) {
+		this.cenarioController.fecharAposta(cenario,ocorreu);
+		
+	}
+
+	@Override
+	public int getCaixaCenario(int cenario) {
+		int valor = this.cenarioController.getCaixa(cenario,this.taxa);
+		this.caixa += valor;
+		return valor;
+	}
+
+	@Override
+	public int getTotalRateioCenario(int cenario) {
+		return this.cenarioController.getTotalArrecardado(cenario);
+		
 	}
 	
 	

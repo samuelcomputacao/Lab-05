@@ -1,6 +1,7 @@
 package com.samuel.lab.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Cenario {
@@ -10,6 +11,7 @@ public class Cenario {
 	private boolean ocorreu;
 	private String descricao;
 	private List<Aposta> apostas;
+	private int caixa;
 	
 	public Cenario(int id,String descricao) {
 		this.id = id;
@@ -29,7 +31,8 @@ public class Cenario {
 	}
 	
 	public void ocorrer(boolean ocorreu) {
-		this.ocorreu = true;
+		this.ocorreu = ocorreu;
+		this.finalizado = true;
 	}
 	
 	@Override
@@ -55,6 +58,39 @@ public class Cenario {
 	public void apostar(Aposta aposta) {
 		this.apostas.add(aposta);
 		
+	}
+
+	public List<Aposta> getApostas() {
+		return this.apostas;
+	}
+
+	public boolean ocorreu() {
+		return this.ocorreu;
+	}
+
+	public int calculaCaixa(double taxa) {
+		
+		Iterator<Aposta> iterator =this.apostas.iterator();
+		Aposta aposta = null;
+		while(iterator.hasNext()) {
+			aposta = iterator.next();
+			if(aposta.isAcontece()) {
+				if(!this.ocorreu) {
+					caixa += aposta.getValor();
+				}
+			}else {
+				if(this.ocorreu) {
+					caixa += aposta.getValor();
+				}
+			}
+		}
+		int valorParcial = (int) Math.floor(caixa*taxa);
+		caixa -= valorParcial;
+		return valorParcial;
+	}
+
+	public int getCaixa() {
+		return this.caixa;
 	}
 
 }
