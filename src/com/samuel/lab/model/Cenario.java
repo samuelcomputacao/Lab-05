@@ -16,6 +16,9 @@ public class Cenario {
 	 * id do cenário
 	 */
 	private int id;
+	/**
+	 * okikikikik
+	 */
 	private boolean finalizado;
 	private boolean ocorreu;
 	private String descricao;
