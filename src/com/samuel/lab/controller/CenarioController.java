@@ -5,10 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import com.samuel.lab.exception.CenarioNaoCadastradoException;
 import com.samuel.lab.exception.CenarioNaoEncerradoException;
-import com.samuel.lab.model.Aposta;
 import com.samuel.lab.model.Cenario;
 
 public class CenarioController {
@@ -16,14 +17,14 @@ public class CenarioController {
 	private int caixa;
 	private double taxa;
 	private int idBase;
-	private HashMap<Integer, Cenario> cenarios;
+	private SortedMap<Integer, Cenario> cenarios;
 	
 
 	public CenarioController(int caixa,double taxa) {
 		this.idBase = 1;
 		this.caixa = caixa;
 		this.taxa = taxa;
-		this.cenarios = new HashMap<>();
+		this.cenarios = new TreeMap<>();
 	}
 
 	public int cadastrar(String descricao) {
@@ -32,19 +33,18 @@ public class CenarioController {
 		return cenario.getId();
 	}
 
-	public String exibirCenario(int id) {
-		if(!cenarios.containsKey(id)) {
+	public String exibirCenario(int idCenario) {
+		if(!cenarios.containsKey(idCenario)) {
 			throw new CenarioNaoCadastradoException();
 		}
-		return this.cenarios.get(id).toString();
+		return this.cenarios.get(idCenario).toString();
 	}
 
 	public String exibirCenarios() {
 		String retorno = "";
-		List<Integer> keysOrdenadas = setToList();
-		Cenario cenario;
-		for(Integer key : keysOrdenadas) {
-			cenario = this.cenarios.get(key);
+		//List<Integer> keysOrdenadas = setToList();
+		for(Cenario cenario : this.cenarios.values()) {
+			//cenario = this.cenarios.get(key);
 			if (retorno.isEmpty()) {
 				retorno = cenario.toString();
 			} else {
@@ -69,8 +69,7 @@ public class CenarioController {
 		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario = cenarios.get(idCenario);
 		//Aposta aposta = apostaController.cadastrar(apostador, valor, previsao);
-		Aposta aposta = new Aposta(apostador,valor,previsao);
-		cenario.apostar(aposta);
+		cenario.apostar(apostador,valor,previsao);
 		
 	}
 
