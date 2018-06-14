@@ -12,7 +12,9 @@ import com.samuel.lab.exception.CampoVazioException;
  *
  */
 public class Cenario {
-	
+	/**
+	 * id do cenário
+	 */
 	private int id;
 	private boolean finalizado;
 	private boolean ocorreu;

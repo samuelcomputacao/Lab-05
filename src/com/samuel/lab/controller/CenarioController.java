@@ -18,14 +18,12 @@ public class CenarioController {
 	private int idBase;
 	private HashMap<Integer, Cenario> cenarios;
 	
-	//private ApostaController apostaController;
 
 	public CenarioController(int caixa,double taxa) {
 		this.idBase = 1;
 		this.caixa = caixa;
 		this.taxa = taxa;
 		this.cenarios = new HashMap<>();
-		//this.apostaController = new ApostaController();
 	}
 
 	public int cadastrar(String descricao) {
