@@ -1,19 +1,31 @@
 package com.samuel.lab.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
+import com.samuel.lab.exception.CenarioNaoCadastradoException;
+import com.samuel.lab.exception.CenarioNaoEncerradoException;
 import com.samuel.lab.model.Aposta;
 import com.samuel.lab.model.Cenario;
 
 public class CenarioController {
-
+	
+	private int caixa;
+	private double taxa;
 	private int idBase;
 	private HashMap<Integer, Cenario> cenarios;
+	
+	//private ApostaController apostaController;
 
-	public CenarioController() {
+	public CenarioController(int caixa,double taxa) {
 		this.idBase = 1;
+		this.caixa = caixa;
+		this.taxa = taxa;
 		this.cenarios = new HashMap<>();
+		//this.apostaController = new ApostaController();
 	}
 
 	public int cadastrar(String descricao) {
@@ -23,73 +35,86 @@ public class CenarioController {
 	}
 
 	public String exibirCenario(int id) {
+		if(!cenarios.containsKey(id)) {
+			throw new CenarioNaoCadastradoException();
+		}
 		return this.cenarios.get(id).toString();
 	}
 
 	public String exibirCenarios() {
 		String retorno = "";
-		Iterator<Cenario> iterator = this.cenarios.values().iterator();
-
-		while (iterator.hasNext()) {
+		List<Integer> keysOrdenadas = setToList();
+		Cenario cenario;
+		for(Integer key : keysOrdenadas) {
+			cenario = this.cenarios.get(key);
 			if (retorno.isEmpty()) {
-				retorno = iterator.next().toString();
+				retorno = cenario.toString();
 			} else {
-				retorno += System.lineSeparator() + iterator.next().toString();
+				retorno += System.lineSeparator() + cenario.toString();
 			}
 		}
 		return retorno;
 	}
 
-	public void apostar(int idCenario, Aposta aposta) {
-		Cenario cenario = cenarios.get(idCenario);
-		if (cenario != null) {
-			cenario.apostar(aposta);
+	private List<Integer> setToList() {
+		Set<Integer> keys = this.cenarios.keySet();
+		
+		List<Integer> keysOrdenadas = new ArrayList<Integer>();
+		for(Integer key : keys) {
+			keysOrdenadas.add(key);
 		}
+		Collections.sort(keysOrdenadas);
+		return keysOrdenadas;
+	}
+
+	public void apostar(int idCenario, String apostador, int valor, boolean previsao) {
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
+		Cenario cenario = cenarios.get(idCenario);
+		//Aposta aposta = apostaController.cadastrar(apostador, valor, previsao);
+		Aposta aposta = new Aposta(apostador,valor,previsao);
+		cenario.apostar(aposta);
+		
 	}
 
 	public int valorTotal(int idCenario) {
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario = this.cenarios.get(idCenario);
-		int resultado = 0;
-		Iterator<Aposta> iterator = cenario.getApostas().iterator();
-		while (iterator.hasNext()) {
-			resultado += iterator.next().getValor();
-		}
-		return resultado;
+		return cenario.valorTotalDeApostas();
 	}
 
 	public int totalApostas(int idCenario) {
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		return this.cenarios.get(idCenario).getApostas().size();
 	}
 
 	public String exibirApostas(int idCenario) {
-		String retorno = "";
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario = this.cenarios.get(idCenario);
-		for(Aposta aposta : cenario.getApostas()) {
-			if(retorno.isEmpty()) {
-				retorno = aposta.toString();
-			}else {
-				retorno += System.lineSeparator()  + aposta.toString();
-			}
-		}
-		return retorno;
+		return cenario.exibiApostas();
 	}
 
 	public void fecharAposta(int idCenario, boolean ocorreu) {
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario  = this.cenarios.get(idCenario);
 		cenario.ocorrer(ocorreu);
 	}
 
-	public int getCaixa(int idCenario,double taxa) {
-		
+	public int getCaixa(int idCenario) {
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario = this.cenarios.get(idCenario);
-		return cenario.calculaCaixa(taxa);
-		
-		
+		if(!cenario.isFinalizado()) throw new CenarioNaoEncerradoException();
+		return cenario.calculaCaixa(this.taxa);
 	}
 
-	public int getTotalArrecardado(int idCenario) {
+	public int getTotalRateio(int idCenario) {
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario  = this.cenarios.get(idCenario);
-		return cenario.getCaixa();
+		if(!cenario.isFinalizado()) throw new CenarioNaoEncerradoException();
+		return cenario.getCaixa()-cenario.calculaCaixa(taxa);
+	}
+
+	public int getCaixa() {
+		return this.caixa;
 	}
 
 }

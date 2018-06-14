@@ -1,5 +1,7 @@
 package com.samuel.lab.model;
 
+import com.samuel.lab.exception.CampoVazioException;
+
 public class Aposta {
 	
 	private String apostador;
@@ -8,7 +10,7 @@ public class Aposta {
 	
 	
 	public Aposta(String apostador, int valor, boolean previsao) {
-		super();
+		if(apostador== null || apostador.isEmpty()) throw new CampoVazioException("Campo apostador vazio");
 		this.apostador = apostador;
 		this.valor = valor;
 		this.previsao = previsao;

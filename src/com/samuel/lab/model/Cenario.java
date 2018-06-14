@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.samuel.lab.exception.CampoVazioException;
+
 public class Cenario {
 	
 	private int id;
@@ -14,6 +16,9 @@ public class Cenario {
 	private int caixa;
 	
 	public Cenario(int id,String descricao) {
+		if(descricao==null || descricao.isEmpty()) {
+			throw new CampoVazioException("Campo descrição vazio");
+		}
 		this.id = id;
 		this.descricao = descricao;
 		this.apostas = new ArrayList<>();
@@ -56,6 +61,7 @@ public class Cenario {
 	}
 
 	public void apostar(Aposta aposta) {
+		this.caixa += aposta.getValor();
 		this.apostas.add(aposta);
 		
 	}
@@ -69,28 +75,33 @@ public class Cenario {
 	}
 
 	public int calculaCaixa(double taxa) {
-		
-		Iterator<Aposta> iterator =this.apostas.iterator();
-		Aposta aposta = null;
-		while(iterator.hasNext()) {
-			aposta = iterator.next();
-			if(aposta.isAcontece()) {
-				if(!this.ocorreu) {
-					caixa += aposta.getValor();
-				}
-			}else {
-				if(this.ocorreu) {
-					caixa += aposta.getValor();
-				}
-			}
-		}
-		int valorParcial = (int) Math.floor(caixa*taxa);
-		caixa -= valorParcial;
-		return valorParcial;
+		return (int) Math.floor(caixa*taxa);
 	}
 
 	public int getCaixa() {
+		
 		return this.caixa;
+	}
+
+	public int valorTotalDeApostas() {
+		int resultado = 0;
+		Iterator<Aposta> iterator = this.apostas.iterator();
+		while (iterator.hasNext()) {
+			resultado += iterator.next().getValor();
+		}
+		return resultado;
+	}
+
+	public String exibiApostas() {
+		String retorno = "";
+		for(Aposta aposta : this.apostas) {
+			if(retorno.isEmpty()) {
+				retorno = aposta.toString();
+			}else {
+				retorno += System.lineSeparator()  + aposta.toString();
+			}
+		}
+		return retorno;
 	}
 
 }

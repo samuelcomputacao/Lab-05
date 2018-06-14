@@ -1,14 +1,10 @@
 package com.samuel.lab.model;
 
-import com.samuel.lab.controller.ApostaController;
 import com.samuel.lab.controller.CenarioController;
 
 public class Facade implements SistemadeApostas{
 	
-	private int caixa;
-	private double taxa;
 	
-	private ApostaController apostaController;
 	private CenarioController cenarioController;
 	
 	public Facade(int centavos,double taxa) {
@@ -17,20 +13,12 @@ public class Facade implements SistemadeApostas{
 	
 	@Override
 	public void inicializa(int centavos, double taxa) {
-		this.caixa = centavos;
-		this.taxa =taxa;
-		this.cenarioController = new CenarioController();
-		this.apostaController = new ApostaController();
+		this.cenarioController = new CenarioController(centavos,taxa);
 	}
 
-	@Override
-	public void salva() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public int getCaixa() {
-		return this.caixa;
+		return this.cenarioController.getCaixa();
 	}
 	
 	@Override
@@ -50,7 +38,7 @@ public class Facade implements SistemadeApostas{
 
 	@Override
 	public void cadastrarAposta(int cenario, String apostador, int valor, boolean previsao) {
-		this.cenarioController.apostar(cenario,this.apostaController.cadastrar(apostador,valor,previsao));
+		this.cenarioController.apostar(cenario,apostador,valor, previsao);
 	}
 
 	@Override
@@ -77,14 +65,12 @@ public class Facade implements SistemadeApostas{
 
 	@Override
 	public int getCaixaCenario(int cenario) {
-		int valor = this.cenarioController.getCaixa(cenario,this.taxa);
-		this.caixa += valor;
-		return valor;
+		return this.cenarioController.getCaixa(cenario);
 	}
 
 	@Override
 	public int getTotalRateioCenario(int cenario) {
-		return this.cenarioController.getTotalArrecardado(cenario);
+		return this.cenarioController.getTotalRateio(cenario);
 		
 	}
 	
