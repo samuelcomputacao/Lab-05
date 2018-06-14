@@ -6,6 +6,11 @@ import java.util.List;
 
 import com.samuel.lab.exception.CampoVazioException;
 
+/**
+ * 
+ * @author paulomsj
+ *
+ */
 public class Cenario {
 	
 	private int id;
