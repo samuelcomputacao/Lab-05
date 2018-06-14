@@ -17,7 +17,7 @@ public class Cenario {
 	 */
 	private int id;
 	/**
-	 * okikikikik
+	 * okikikikikgffd
 	 */
 	private boolean finalizado;
 	private boolean ocorreu;
