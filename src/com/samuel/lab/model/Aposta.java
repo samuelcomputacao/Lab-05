@@ -1,6 +1,6 @@
 package com.samuel.lab.model;
 
-import com.samuel.lab.exception.CampoVazioException;
+import com.samuel.lab.exception.CampoInvalidoException;
 
 /**
  * Classe que repsesenta uima aposta no sistema
@@ -31,7 +31,8 @@ public class Aposta {
 	 * @param previsao : Previsão para a aposta segundo o apostador
 	 */
 	public Aposta(String apostador, int valor, boolean previsao) {
-		if(apostador== null || apostador.isEmpty()) throw new CampoVazioException("Campo apostador vazio");
+		if(apostador== null || apostador.isEmpty()) throw new CampoInvalidoException("Campo apostador vazio");
+		if(valor<=0 ) throw new CampoInvalidoException("Campo valor inválido");
 		this.apostador = apostador;
 		this.valor = valor;
 		this.previsao = previsao;
@@ -60,6 +61,48 @@ public class Aposta {
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s - R$%.2f - %s", this.apostador,(this.valor/100),this.previsao?"VAI ACONTECER":"N VAI ACONTECER");
+		return String.format("%s - R$%.2f - %s", this.apostador,(double)this.valor/100,(this.previsao?"VAI ACONTECER":"N VAI ACONTECER"));
 	}
+
+	/**
+	 * Método responsável por gerar o hashCode de Aposta
+	 * @return : Um inteiro representando o hash da aposta 
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((apostador == null) ? 0 : apostador.hashCode());
+		result = prime * result + (previsao ? 1231 : 1237);
+		result = prime * result + valor;
+		return result;
+	}
+
+	/**
+	 * Método responsável por verificar se duas contas sao iguais
+	 * @return : Um bolleano representado se as contas são iguais ou não
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Aposta other = (Aposta) obj;
+		if (apostador == null) {
+			if (other.apostador != null)
+				return false;
+		} else if (!apostador.equals(other.apostador))
+			return false;
+		if (previsao != other.previsao)
+			return false;
+		if (valor != other.valor)
+			return false;
+		return true;
+	}
+	
+	
+	
 }

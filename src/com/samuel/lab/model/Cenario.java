@@ -1,10 +1,11 @@
 package com.samuel.lab.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import com.samuel.lab.exception.CampoVazioException;
+import com.samuel.lab.exception.CampoInvalidoException;
+import com.samuel.lab.exception.CenarioJaEncerradoException;
+import com.samuel.lab.exception.CenarioSemApostasException;
 
 /**
  * Classe que representa um cenário que será exposto para apostas
@@ -20,7 +21,7 @@ public class Cenario {
 	/**
 	 * Representa se o cenário está finalizado ou não
 	 */
-	private boolean finalizado;
+	private boolean encerrado;
 	
 	/**
 	 *Representa se o cenário ocorreu ou não 
@@ -48,13 +49,13 @@ public class Cenario {
 	 * @param descricao : Uma String representando a descrição do senŕio que será criado
 	 */
 	public Cenario(int id,String descricao) {
-		if(descricao==null || descricao.isEmpty()) {
-			throw new CampoVazioException("Campo descrição vazio");
-		}
+		if(descricao==null || descricao.isEmpty()) throw new CampoInvalidoException("Campo descrição vazio");
+		if(id <= 0) throw new CampoInvalidoException("");
+		
 		this.id = id;
 		this.descricao = descricao;
 		this.apostas = new ArrayList<>();
-		this.finalizado = false;
+		this.encerrado = false;
 		this.ocorreu = false;
 		
 	}
@@ -63,15 +64,16 @@ public class Cenario {
 	 * Método responsável finalizar o cenário
 	 */
 	public void encerrar() {
-		this.finalizado = true;
+		if(this.encerrado) throw new CenarioJaEncerradoException();
+		this.encerrado = true;
 	}
 	
 	/**
 	 * Método acessível para o atribulto finalizado
 	 * @return o valor do atribulto finalizado
 	 */
-	public boolean isFinalizado() {
-		return this.finalizado;
+	public boolean isEncerrado() {
+		return this.encerrado;
 	}
 	
 	/**
@@ -79,8 +81,16 @@ public class Cenario {
 	 * @param ocorreu : Representa se o cenário ocorreu ou não
 	 */
 	public void ocorrer(boolean ocorreu) {
+		if(this.encerrado) throw new CenarioJaEncerradoException();
 		this.ocorreu = ocorreu;
-		this.finalizado = true;
+		this.encerrado = true;
+	}
+	
+	/**
+	 * Método responsável por verificar se um cenário ocorreu ou não
+	 */
+	public boolean isOcorreu() {
+		return this.ocorreu;
 	}
 	
 	/**
@@ -91,14 +101,14 @@ public class Cenario {
 	public String toString() {
 		String retorno = String.format("%d - %s - ", this.id,this.descricao);
 		
-		if(this.finalizado) {
+		if(this.encerrado) {
 			if(this.ocorreu) {
 				retorno += "Finalizado (ocorreu)";
 			}else {
 				retorno += "Finalizado (n ocorreu)";
 			}
 		}else {
-			retorno += "Não finalizado";
+			retorno += "Não Finalizado";
 		}
 		return retorno;
 	}
@@ -126,7 +136,7 @@ public class Cenario {
 	
 	/**
 	 * Método responsável por retornar todas as apostas do cenário
-	 * @return uma lista de apostas 
+	 * @return uma lista de apostas
 	 */
 	public List<Aposta> getApostas() {
 		return this.apostas;
@@ -146,6 +156,7 @@ public class Cenario {
 	 * @return Um valor inteiroi representando o tatal em centavos do valor que será adicionado ao sistema
 	 */
 	public int calculaCaixa(double taxa) {
+		if(this.apostas.isEmpty()) throw new CenarioSemApostasException();
 		return (int) Math.floor(caixa*taxa);
 	}
 
@@ -162,12 +173,13 @@ public class Cenario {
 	 * @return um valor inteiro representando o valor total acumulado do cenário em centavos
 	 */
 	public int valorTotalDeApostas() {
-		int resultado = 0;
-		Iterator<Aposta> iterator = this.apostas.iterator();
-		while (iterator.hasNext()) {
-			resultado += iterator.next().getValor();
-		}
-		return resultado;
+//		int resultado = 0;
+//		Iterator<Aposta> iterator = this.apostas.iterator();
+//		while (iterator.hasNext()) {
+//			resultado += iterator.next().getValor();
+//		}
+		if(this.apostas.isEmpty()) throw new CenarioSemApostasException();
+		return this.caixa;
 	}
 	
 	/**
@@ -175,6 +187,7 @@ public class Cenario {
 	 * @return um String representando todas as Strings do cenário
 	 */
 	public String exibiApostas() {
+		if(this.apostas.isEmpty()) throw new CenarioSemApostasException();
 		String retorno = "";
 		for(Aposta aposta : this.apostas) {
 			if(retorno.isEmpty()) {
@@ -184,5 +197,10 @@ public class Cenario {
 			}
 		}
 		return retorno;
+	}
+
+	public int totalApostas() {
+		if(this.apostas.isEmpty()) throw new CenarioSemApostasException();
+		return this.apostas.size();
 	}
 }

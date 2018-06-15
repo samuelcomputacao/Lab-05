@@ -1,13 +1,9 @@
 package com.samuel.lab.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import com.samuel.lab.exception.CampoInvalidoException;
 import com.samuel.lab.exception.CenarioNaoCadastradoException;
 import com.samuel.lab.exception.CenarioNaoEncerradoException;
 import com.samuel.lab.model.Cenario;
@@ -54,21 +50,20 @@ public class CenarioController {
 		return retorno;
 	}
 
-	private List<Integer> setToList() {
-		Set<Integer> keys = this.cenarios.keySet();
-		
-		List<Integer> keysOrdenadas = new ArrayList<Integer>();
-		for(Integer key : keys) {
-			keysOrdenadas.add(key);
-		}
-		Collections.sort(keysOrdenadas);
-		return keysOrdenadas;
-	}
+//	private List<Integer> setToList() {
+//		Set<Integer> keys = this.cenarios.keySet();
+//		
+//		List<Integer> keysOrdenadas = new ArrayList<Integer>();
+//		for(Integer key : keys) {
+//			keysOrdenadas.add(key);
+//		}
+//		Collections.sort(keysOrdenadas);
+//		return keysOrdenadas;
+//	}
 
 	public void apostar(int idCenario, String apostador, int valor, boolean previsao) {
 		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario = cenarios.get(idCenario);
-		//Aposta aposta = apostaController.cadastrar(apostador, valor, previsao);
 		cenario.apostar(apostador,valor,previsao);
 		
 	}
@@ -81,7 +76,7 @@ public class CenarioController {
 
 	public int totalApostas(int idCenario) {
 		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
-		return this.cenarios.get(idCenario).getApostas().size();
+		return this.cenarios.get(idCenario).totalApostas();
 	}
 
 	public String exibirApostas(int idCenario) {
@@ -91,6 +86,7 @@ public class CenarioController {
 	}
 
 	public void fecharAposta(int idCenario, boolean ocorreu) {
+		if(idCenario <=0) throw new CampoInvalidoException("O id cenário informado é invalido");
 		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario  = this.cenarios.get(idCenario);
 		cenario.ocorrer(ocorreu);
@@ -99,14 +95,14 @@ public class CenarioController {
 	public int getCaixa(int idCenario) {
 		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario = this.cenarios.get(idCenario);
-		if(!cenario.isFinalizado()) throw new CenarioNaoEncerradoException();
+		if(!cenario.isEncerrado()) throw new CenarioNaoEncerradoException();
 		return cenario.calculaCaixa(this.taxa);
 	}
 
 	public int getTotalRateio(int idCenario) {
 		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
 		Cenario cenario  = this.cenarios.get(idCenario);
-		if(!cenario.isFinalizado()) throw new CenarioNaoEncerradoException();
+		if(!cenario.isEncerrado()) throw new CenarioNaoEncerradoException();
 		return cenario.getCaixa()-cenario.calculaCaixa(taxa);
 	}
 
