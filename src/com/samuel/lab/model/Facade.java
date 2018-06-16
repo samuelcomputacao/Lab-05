@@ -155,7 +155,7 @@ public class Facade implements SistemadeApostas{
 	 */
 	@Override
 	public int getCaixaCenario(int cenario) {
-		return this.cenarioController.getCaixa(cenario);
+		return this.cenarioController.getCaixaCenario(cenario);
 	}
 
 	/**
