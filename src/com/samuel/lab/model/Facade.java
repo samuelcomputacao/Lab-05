@@ -52,7 +52,7 @@ public class Facade implements SistemadeApostas{
 	 * @return um inteiro representando o id do cenário;
 	 */
 	@Override
-	public int cadastrarCenarios(String descricao) {
+	public int cadastrarCenario(String descricao) {
 		return this.cenarioController.cadastrar(descricao);
 	}
 
@@ -88,10 +88,10 @@ public class Facade implements SistemadeApostas{
 	 * @param valor
 	 *            : Um inteiro representando o valor em centavos da aposta
 	 * @param previsao
-	 *            : Um valor bolleano que representa a previsao do apostador
+	 *            : Uma string que representa a previsao do apostador
 	 */
 	@Override
-	public void cadastrarAposta(int cenario, String apostador, int valor, boolean previsao) {
+	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
 		this.cenarioController.apostar(cenario,apostador,valor, previsao);
 	}
 	

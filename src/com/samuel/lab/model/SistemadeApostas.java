@@ -24,7 +24,7 @@ public interface SistemadeApostas {
 	 * @param descricao
 	 * @return um inteiro representando o id do cenário;
 	 */
-	public int cadastrarCenarios(String descricao);
+	public int cadastrarCenario(String descricao);
 
 	/**
 	 * Método responsável por exibi um cenário
@@ -52,9 +52,9 @@ public interface SistemadeApostas {
 	 * @param valor
 	 *            : Um inteiro representando o valor em centavos da aposta
 	 * @param previsao
-	 *            : Um valor bolleano que representa a previsao do apostador
+	 *            : Uma string que representa a previsao do apostador
 	 */
-	public void cadastrarAposta(int cenario, String apostador, int valor, boolean previsao);
+	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao);
 
 	/**
 	 * Método responsável por calcular o valor total arrecardado com as apostas de

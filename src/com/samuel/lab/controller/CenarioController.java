@@ -98,9 +98,9 @@ public class CenarioController {
 	 * @param valor : O valor da aposta
 	 * @param previsao : Siginifica se a aposta é favorável ou cotra
 	 */
-	public void apostar(int idCenario, String apostador, int valor, boolean previsao) {
+	public void apostar(int idCenario, String apostador, int valor, String previsao) {
 		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
-		Cenario cenario = cenarios.get(idCenario);
+		Cenario cenario = cenarios.get(idCenario);	
 		cenario.apostar(apostador,valor,previsao);
 		
 	}

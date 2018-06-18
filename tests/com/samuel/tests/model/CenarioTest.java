@@ -102,7 +102,7 @@ public class CenarioTest {
 	@Test
 	public void testIsEncerradoTrue() {
 		this.cenario.encerrar();
-		assertFalse(this.cenario.isEncerrado());
+		assertTrue(this.cenario.isEncerrado());
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class CenarioTest {
 	 * Testa o processo de verificar se um cenário ocorreu com um cenário que não ocorreu
 	 */
 	@Test
-	public void testOcorrerFAlse() {
+	public void testOcorrerFalse() {
 		this.cenario.ocorrer(false);
 		assertFalse(this.cenario.isOcorreu());
 	}
@@ -168,7 +168,7 @@ public class CenarioTest {
 	 */
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarApostadorNull() {
-		this.cenario.apostar(null, 1000, true);
+		this.cenario.apostar(null, 1000, "VAI ACONTECER");
 	}
 	
 	/**
@@ -176,7 +176,7 @@ public class CenarioTest {
 	 */
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarApostadorVazio() {
-		this.cenario.apostar("", 1000, true);
+		this.cenario.apostar("", 1000, "VAI ACONTECER");
 	}
 	
 	/**
@@ -184,7 +184,7 @@ public class CenarioTest {
 	 */
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarValorZerado() {
-		this.cenario.apostar("Samuel", 0, true);
+		this.cenario.apostar("Samuel", 0, "VAI ACONTECER");
 	}
 	
 	/**
@@ -192,7 +192,23 @@ public class CenarioTest {
 	 */
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarValorNegativo() {
-		this.cenario.apostar("Samuel", -100 , true);
+		this.cenario.apostar("Samuel", -100 , "VAI ACONTECER");
+	}
+	
+	/**
+	 * Testa o processo de apostar com a previsão nula
+	 */
+	@Test(expected = CampoInvalidoException.class)
+	public void testApostarPrevisaoNula() {
+		this.cenario.apostar("Samuel", -100 , null);
+	}
+	
+	/**
+	 * Testa o processo de apostar com a previsão vazia
+	 */
+	@Test(expected = CampoInvalidoException.class)
+	public void testApostarPrevisaoVazia() {
+		this.cenario.apostar("Samuel", -100 , "");
 	}
 
 	/**
@@ -208,8 +224,8 @@ public class CenarioTest {
 		apostas.add(aposta1);
 		apostas.add(aposta2);
 		
-		this.cenario.apostar("Samuel", 10, true);
-		this.cenario.apostar("Samuel", 10, false);
+		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
+		this.cenario.apostar("Samuel", 10, "N VAI ACONTECER");
 		
 		assertEquals(apostas, this.cenario.getApostas());
 	}
@@ -237,7 +253,7 @@ public class CenarioTest {
 	 */
 	@Test
 	public void testCalculaCaixa() {
-		this.cenario.apostar("Samuel", 100, true);
+		this.cenario.apostar("Samuel", 100, "VAI ACONTECER");
 		assertEquals(10, this.cenario.calculaCaixa(0.10));
 	}
 
@@ -246,8 +262,8 @@ public class CenarioTest {
 	 */
 	@Test
 	public void testGetCaixa() {
-		this.cenario.apostar("Samuel", 10, true);
-		this.cenario.apostar("Maria", 100, false);
+		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
+		this.cenario.apostar("Maria", 100, "N VAI ACONTECER");
 		assertEquals(110, this.cenario.getCaixa());
 	}
 
@@ -256,8 +272,8 @@ public class CenarioTest {
 	 */
 	@Test
 	public void testValorTotalDeApostas() {
-		this.cenario.apostar("Samuel", 10, true);
-		this.cenario.apostar("Maria", 100, false);
+		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
+		this.cenario.apostar("Maria", 100, "N VAI ACONTECER");
 		assertEquals(110, this.cenario.valorTotalDeApostas());
 	}
 	
@@ -266,8 +282,8 @@ public class CenarioTest {
 	 */
 	@Test
 	public void testExibiApostas() {
-		this.cenario.apostar("Samuel", 10, true);
-		this.cenario.apostar("Maria", 100, false);
+		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
+		this.cenario.apostar("Maria", 100, "N VAI ACONTECER");
 		
 		String str  = "Samuel - R$0,10 - VAI ACONTECER"+System.lineSeparator();
 		str += "Maria - R$1,00 - N VAI ACONTECER";

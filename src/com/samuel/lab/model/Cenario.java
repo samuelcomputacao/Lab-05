@@ -127,8 +127,14 @@ public class Cenario {
 	 * @param valor : Valor total da aposta
 	 * @param previsao : Previsão da aposta para o cenário segundo o apostador
 	 */
-	public void apostar(String apostador,int valor,boolean previsao) {
-		Aposta aposta = new Aposta(apostador, valor, previsao);
+	public void apostar(String apostador,int valor,String previsao) {
+		if(previsao==null || previsao.isEmpty()) throw new CampoInvalidoException("Valor da previsão incorreto");
+		Aposta aposta = null;
+		if(previsao.equals("VAI ACONTECER")) {
+			aposta = new Aposta(apostador, valor, true);
+		}else {
+			aposta = new Aposta(apostador, valor, false);
+		}
 		this.caixa += aposta.getValor();
 		this.apostas.add(aposta);
 		
