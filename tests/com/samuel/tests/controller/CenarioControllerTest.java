@@ -86,6 +86,14 @@ public class CenarioControllerTest {
 	}
 	
 	/**
+	 * Testa a exibição de um cenário com id inválido
+	 */
+	@Test(expected = CampoInvalidoException.class)
+	public void testExibirCenarioInvalido() {
+		this.cenarioController.exibirCenario(-1);
+	}
+	
+	/**
 	 * Testa a exibição de um cenário passando o id = 0
 	 */
 	@Test(expected = CampoInvalidoException.class)
@@ -187,6 +195,14 @@ public class CenarioControllerTest {
 	}
 	
 	/**
+	 * Testa o carregamento do valor total de um cenário inválido
+	 */
+	@Test(expected = CampoInvalidoException.class)
+	public void testValorTotalCenarioInvalido() {
+		this.cenarioController.valorTotal(-1);
+	}
+	
+	/**
 	 * Testa o carregamento do valor total de um cenário sem que ele tenha apostas cadastradas
 	 */
 	@Test(expected = CenarioSemApostasException.class)
@@ -212,6 +228,14 @@ public class CenarioControllerTest {
 	@Test(expected = CenarioNaoCadastradoException.class)
 	public void testTotalApostasCenarioNaoCadastrado() {
 		this.cenarioController.totalApostas(1);
+	}
+	
+	/**
+	 * Testa o carregamento do total de apostas cadastradas de um cenário inválido 
+	 */
+	@Test(expected = CampoInvalidoException.class)
+	public void testTotalApostasCenarioInvalido() {
+		this.cenarioController.totalApostas(-1);
 	}
 	
 	/**

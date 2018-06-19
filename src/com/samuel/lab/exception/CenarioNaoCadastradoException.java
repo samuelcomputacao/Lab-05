@@ -4,7 +4,7 @@ package com.samuel.lab.exception;
 public class CenarioNaoCadastradoException extends RuntimeException {
 	
 	public CenarioNaoCadastradoException() {
-		super("Cenário não cadastrado");
+		super("Erro na consulta de cenario: Cenario nao cadastrado");
 	}
 
 }

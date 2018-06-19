@@ -2,6 +2,8 @@ package com.samuel.lab.model;
 
 import com.samuel.lab.controller.CenarioController;
 
+import easyaccept.EasyAccept;
+
 /**
  * Facade responsável por direcionar todos os métodos do sistema
  * 
@@ -68,8 +70,7 @@ public class Facade implements SistemadeApostas{
 		return cenarioController.exibirCenario(id);
 	}
 	
-	/**
-	 * Método responsável por exibir todos os cenários cadastrados no sistema
+	/**	 * Método responsável por exibir todos os cenários cadastrados no sistema
 	 * 
 	 * @return : Uma String representando todos os cenários do sistema
 	 */
@@ -169,5 +170,12 @@ public class Facade implements SistemadeApostas{
 	@Override
 	public int getTotalRateioCenario(int cenario) {
 		return this.cenarioController.getTotalRateio(cenario);
+	}
+	
+	
+	public static void main(String[] args) {
+		args = new String[]{"com.samuel.lab.model.Facade","easy_accept/us1_test.txt","easy_accept/us2_test.txt","easy_accept/us3_test.txt","easy_accept/us4_test.txt"};
+		EasyAccept.main(args);
+		
 	}
 }

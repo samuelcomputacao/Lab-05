@@ -4,7 +4,7 @@ package com.samuel.lab.exception;
 public class CenarioNaoEncerradoException extends RuntimeException {
 	
 	public CenarioNaoEncerradoException() {
-		super("O cenário n]ao foi encerrado");
+		super("Erro na consulta do total de rateio do cenario: Cenario ainda esta aberto");
 	}
 
 }

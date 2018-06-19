@@ -49,7 +49,8 @@ public class Cenario {
 	 * @param descricao : Uma String representando a descrição do senŕio que será criado
 	 */
 	public Cenario(int id,String descricao) {
-		if(descricao==null || descricao.isEmpty()) throw new CampoInvalidoException("Campo descrição vazio");
+		if(id <= 0) throw new CampoInvalidoException("Erro no cadastro de aposta: Cenario invalido");
+		if(descricao==null || descricao.isEmpty()) throw new CampoInvalidoException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
 		if(id <= 0) throw new CampoInvalidoException("");
 		
 		this.id = id;
@@ -128,12 +129,14 @@ public class Cenario {
 	 * @param previsao : Previsão da aposta para o cenário segundo o apostador
 	 */
 	public void apostar(String apostador,int valor,String previsao) {
-		if(previsao==null || previsao.isEmpty()) throw new CampoInvalidoException("Valor da previsão incorreto");
+		if(previsao==null || previsao.trim().isEmpty()) throw new CampoInvalidoException("Erro no cadastro de aposta: Previsao nao pode ser vazia ou nula");
 		Aposta aposta = null;
 		if(previsao.equals("VAI ACONTECER")) {
 			aposta = new Aposta(apostador, valor, true);
-		}else {
+		}else if(previsao.equals("N VAI ACONTECER")){
 			aposta = new Aposta(apostador, valor, false);
+		}else {
+			throw new CampoInvalidoException("Erro no cadastro de aposta: Previsao invalida");
 		}
 		this.caixa += aposta.getValor();
 		this.apostas.add(aposta);
