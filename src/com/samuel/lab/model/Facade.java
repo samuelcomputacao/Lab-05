@@ -175,6 +175,11 @@ public class Facade implements SistemadeApostas {
 		return this.cenarioController.getTotalRateio(cenario);
 	}
 
+	
+	/**
+	 * Método responsável por realizar os testes de validação da facade
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		args = new String[] { "com.samuel.lab.model.Facade", "easy_accept/us1_test.txt", "easy_accept/us2_test.txt",
