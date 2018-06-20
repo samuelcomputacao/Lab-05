@@ -54,7 +54,7 @@ public class CenarioControllerTest {
 	@Test
 	public void testExibirCenario() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		assertEquals("1 - Brasil Hexa - Não Finalizado", this.cenarioController.exibirCenario(1));
+		assertEquals("1 - Brasil Hexa - Nao finalizado", this.cenarioController.exibirCenario(1));
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class CenarioControllerTest {
 	public void testExibirCenarioFilalizadoOcorrido() {
 		this.cenarioController.cadastrar("Brasil Hexa");
 		this.cenarioController.fecharAposta(1, true);
-		assertEquals("1 - Brasil Hexa - Finalizado (ocorreu)", this.cenarioController.exibirCenario(1));
+		assertEquals("1 - Brasil Hexa - finalizado (ocorreu)", this.cenarioController.exibirCenario(1));
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class CenarioControllerTest {
 	public void testExibirCenarioFilalizadoNaoOcorrido() {
 		this.cenarioController.cadastrar("Brasil Hexa");
 		this.cenarioController.fecharAposta(1, false);
-		assertEquals("1 - Brasil Hexa - Finalizado (n ocorreu)", this.cenarioController.exibirCenario(1));
+		assertEquals("1 - Brasil Hexa - finalizado (n ocorreu)", this.cenarioController.exibirCenario(1));
 	}
 	
 	/**
@@ -117,8 +117,8 @@ public class CenarioControllerTest {
 		this.cenarioController.cadastrar("Brasil Hexa");
 		this.cenarioController.cadastrar("Palmeiras Sem Mundial");
 		
-		String str = "1 - Brasil Hexa - Não Finalizado" + System.lineSeparator();
-		str += "2 - Palmeiras Sem Mundial - Não Finalizado";
+		String str = "1 - Brasil Hexa - Nao finalizado" + System.lineSeparator();
+		str += "2 - Palmeiras Sem Mundial - Nao finalizado";
 		assertEquals(str, this.cenarioController.exibirCenarios());
 	}
 
@@ -128,7 +128,7 @@ public class CenarioControllerTest {
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarApostadorNull() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, null, 1000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, null, 1000, "VAI ACONTECER");
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class CenarioControllerTest {
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarApostadorVazio() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "", 1000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "", 1000, "VAI ACONTECER");
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class CenarioControllerTest {
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarValorNegativo() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", -1000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", -1000, "VAI ACONTECER");
 	}
 	
 	/**
@@ -155,7 +155,7 @@ public class CenarioControllerTest {
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarValorZerado() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 0, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 0, "VAI ACONTECER");
 	}
 	
 	/**
@@ -164,7 +164,7 @@ public class CenarioControllerTest {
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarPrevisaoNula() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 0, null);
+		this.cenarioController.cadastrarAposta(1, "Samuel", 0, null);
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class CenarioControllerTest {
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarPrevisaoVazia() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 0, "");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 0, "");
 	}
 	
 	/**
@@ -182,8 +182,8 @@ public class CenarioControllerTest {
 	@Test
 	public void testValorTotal() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 100,"N VAI ACONTECER");
-		assertEquals(100, this.cenarioController.valorTotal(1));
+		this.cenarioController.cadastrarAposta(1, "Samuel", 100,"N VAI ACONTECER");
+		assertEquals(100, this.cenarioController.valorTotalDeApostas(1));
 	}
 	
 	/**
@@ -191,7 +191,7 @@ public class CenarioControllerTest {
 	 */
 	@Test(expected = CenarioNaoCadastradoException.class)
 	public void testValorTotalCenarioNaoCadastrado() {
-		this.cenarioController.valorTotal(1);
+		this.cenarioController.valorTotalDeApostas(1);
 	}
 	
 	/**
@@ -199,7 +199,7 @@ public class CenarioControllerTest {
 	 */
 	@Test(expected = CampoInvalidoException.class)
 	public void testValorTotalCenarioInvalido() {
-		this.cenarioController.valorTotal(-1);
+		this.cenarioController.valorTotalDeApostas(-1);
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public class CenarioControllerTest {
 	@Test(expected = CenarioSemApostasException.class)
 	public void testValorTotalCenarioSemApostas() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.valorTotal(1);
+		this.cenarioController.valorTotalDeApostas(1);
 	}
 
 	/**
@@ -217,9 +217,9 @@ public class CenarioControllerTest {
 	@Test
 	public void testTotalApostas() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 100,"N VAI ACONTECER");
-		this.cenarioController.apostar(1, "Samuel", 100,"VAI ACONTECER");
-		assertEquals(2, this.cenarioController.totalApostas(1));
+		this.cenarioController.cadastrarAposta(1, "Samuel", 100,"N VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 100,"VAI ACONTECER");
+		assertEquals(2, this.cenarioController.totalDeApostas(1));
 	}
 	
 	/**
@@ -227,7 +227,7 @@ public class CenarioControllerTest {
 	 */
 	@Test(expected = CenarioNaoCadastradoException.class)
 	public void testTotalApostasCenarioNaoCadastrado() {
-		this.cenarioController.totalApostas(1);
+		this.cenarioController.totalDeApostas(1);
 	}
 	
 	/**
@@ -235,7 +235,7 @@ public class CenarioControllerTest {
 	 */
 	@Test(expected = CampoInvalidoException.class)
 	public void testTotalApostasCenarioInvalido() {
-		this.cenarioController.totalApostas(-1);
+		this.cenarioController.totalDeApostas(-1);
 	}
 	
 	/**
@@ -244,7 +244,7 @@ public class CenarioControllerTest {
 	@Test(expected = CenarioSemApostasException.class)
 	public void testTotalApostasCenarioSemApostas() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.totalApostas(1);
+		this.cenarioController.totalDeApostas(1);
 	}
 
 	/**
@@ -256,8 +256,8 @@ public class CenarioControllerTest {
 		str += "Maria - R$1,00 - VAI ACONTECER";
 		
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 100, "N VAI ACONTECER");
-		this.cenarioController.apostar(1, "Maria", 100, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "N VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Maria", 100, "VAI ACONTECER");
 		
 		assertEquals(str, this.cenarioController.exibirApostas(1));
 		
@@ -304,7 +304,8 @@ public class CenarioControllerTest {
 	@Test
 	public void testGetCaixaInt() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 2000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 2000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 2000, "N VAI ACONTECER");
 		this.cenarioController.fecharAposta(1, true);
 		assertEquals(200, this.cenarioController.getCaixaCenario(1));
 	}
@@ -335,7 +336,8 @@ public class CenarioControllerTest {
 	@Test
 	public void testGetTotalRateio() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 2000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 2000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 2000, "N VAI ACONTECER");
 		this.cenarioController.fecharAposta(1, true);
 		assertEquals(1800, this.cenarioController.getTotalRateio(1));
 	}
@@ -367,7 +369,7 @@ public class CenarioControllerTest {
 	@Test(expected = CenarioNaoEncerradoException.class)
 	public void testGetTotalRateioCenarioNaoEncerrado() {
 		this.cenarioController.cadastrar("Brasil Hexa");
-		this.cenarioController.apostar(1, "Samuel", 1000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 1000, "VAI ACONTECER");
 		this.cenarioController.getTotalRateio(1);
 	}
 

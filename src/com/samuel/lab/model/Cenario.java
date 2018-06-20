@@ -104,12 +104,12 @@ public class Cenario {
 		
 		if(this.encerrado) {
 			if(this.ocorreu) {
-				retorno += "Finalizado (ocorreu)";
+				retorno += "finalizado (ocorreu)";
 			}else {
-				retorno += "Finalizado (n ocorreu)";
+				retorno += "finalizado (n ocorreu)";
 			}
 		}else {
-			retorno += "Não Finalizado";
+			retorno += "Nao finalizado";
 		}
 		return retorno;
 	}
@@ -166,7 +166,20 @@ public class Cenario {
 	 */
 	public int calculaCaixa(double taxa) {
 		if(this.apostas.isEmpty()) throw new CenarioSemApostasException();
-		return (int) Math.floor(caixa*taxa);
+		int valor  = 0;
+		for(Aposta aposta : this.apostas){
+			if(aposta.isAcontece()){
+				if(!this.ocorreu) {
+					valor += aposta.getValor();
+				}
+			}else {
+				if(this.ocorreu) {
+					valor += aposta.getValor();
+				}
+			}
+	
+		}
+		return  (int) Math.floor((valor*taxa));
 	}
 
 	/**
@@ -174,7 +187,20 @@ public class Cenario {
 	 * @return o valor do caixa do cenário
 	 */
 	public int getCaixa() {
-		return this.caixa;
+		int valor = 0;
+		for(Aposta aposta : this.apostas){
+			if(aposta.isAcontece()){
+				if(!this.ocorreu) {
+					valor += aposta.getValor();
+				}
+			}else {
+				if(this.ocorreu) {
+					valor += aposta.getValor();
+				}
+			}
+	
+		}
+		return valor;
 	}
 	
 	/**
@@ -211,5 +237,14 @@ public class Cenario {
 	public int totalApostas() {
 		if(this.apostas.isEmpty()) throw new CenarioSemApostasException();
 		return this.apostas.size();
+	}
+	
+	// Método respónsáve por calcular o caixa do cenário
+	public int getCaixaTotal() {
+		int valor = 0;
+		for(Aposta aposta : this.apostas) {
+			valor += aposta.getValor();
+		}
+		return valor;
 	}
 }

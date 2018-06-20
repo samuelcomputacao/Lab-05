@@ -137,13 +137,13 @@ public class CenarioTest {
 	 */
 	@Test
 	public void testToStringNaoFinalizado() {
-		assertEquals("1 - Brasil Hexa - Não Finalizado", this.cenario.toString());
+		assertEquals("1 - Brasil Hexa - Nao finalizado", this.cenario.toString());
 	}
 	
 	@Test
 	public void testToStringFinalizadoOcorrido() {
 		this.cenario.ocorrer(true);
-		assertEquals("1 - Brasil Hexa - Finalizado (ocorreu)", this.cenario.toString());
+		assertEquals("1 - Brasil Hexa - finalizado (ocorreu)", this.cenario.toString());
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class CenarioTest {
 	@Test
 	public void testToStringFinalizadoNaoOcorrido() {
 		this.cenario.ocorrer(false);
-		assertEquals("1 - Brasil Hexa - Finalizado (n ocorreu)", this.cenario.toString());
+		assertEquals("1 - Brasil Hexa - finalizado (n ocorreu)", this.cenario.toString());
 	}
 
 	/**
@@ -261,10 +261,10 @@ public class CenarioTest {
 	 * Testa o processo que recupera o caia do sistema
 	 */
 	@Test
-	public void testGetCaixa() {
+	public void testGetCaixaTotal() {
 		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
 		this.cenario.apostar("Maria", 100, "N VAI ACONTECER");
-		assertEquals(110, this.cenario.getCaixa());
+		assertEquals(110, this.cenario.getCaixaTotal());
 	}
 
 	/**

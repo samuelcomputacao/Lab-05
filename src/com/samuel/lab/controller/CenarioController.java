@@ -44,9 +44,9 @@ public class CenarioController {
 	 */
 	public CenarioController(int caixa,double taxa) {
 		if(caixa < 0 ) {
-			throw new CampoInvalidoException("Caixa nao pode ser inferior a 0");
+			throw new CampoInvalidoException("Erro na inicializacao: Caixa nao pode ser inferior a 0");
 		}
-		if(taxa < 0 ) throw new CampoInvalidoException("Taxa nao pode ser inferior a 0");
+		if(taxa < 0 ) throw new CampoInvalidoException("Erro na inicializacao: Taxa nao pode ser inferior a 0");
 		this.idBase = 1;
 		this.caixa = caixa;
 		this.taxa = taxa;
@@ -72,7 +72,7 @@ public class CenarioController {
 	public String exibirCenario(int idCenario) {
 		if(idCenario <= 0) throw new CampoInvalidoException("Erro na consulta de cenario: Cenario invalido");
 		if(!cenarios.containsKey(idCenario)) {
-			throw new CenarioNaoCadastradoException();
+			throw new CenarioNaoCadastradoException("Erro na consulta de cenario: Cenario nao cadastrado");
 		}
 		return this.cenarios.get(idCenario).toString();
 	}
@@ -102,9 +102,10 @@ public class CenarioController {
 	 * @param valor : O valor da aposta
 	 * @param previsao : Siginifica se a aposta é favorável ou cotra
 	 */
-	public void apostar(int idCenario, String apostador, int valor, String previsao) {
+	public void cadastrarAposta(int idCenario, String apostador, int valor, String previsao) {
 		if(idCenario <= 0) throw new CampoInvalidoException("Erro no cadastro de aposta: Cenario invalido");
-		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException("Erro no cadastro de aposta: Cenario nao cadastrado");
+		if(apostador== null || apostador.trim().isEmpty()) throw new CampoInvalidoException("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
 		Cenario cenario = cenarios.get(idCenario);	
 		cenario.apostar(apostador,valor,previsao);
 		
@@ -115,9 +116,9 @@ public class CenarioController {
 	 * @param idCenario : id do cenário que será verificado
 	 * @return o valor resultante do processo
 	 */
-	public int valorTotal(int idCenario) {
+	public int valorTotalDeApostas(int idCenario) {
 		if(idCenario <= 0 ) throw new CampoInvalidoException("Erro na consulta do valor total de apostas: Cenario invalido");
-		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException("Erro na consulta do valor total de apostas: Cenario nao cadastrado");
 		Cenario cenario = this.cenarios.get(idCenario);
 		return cenario.valorTotalDeApostas();
 	}
@@ -127,9 +128,9 @@ public class CenarioController {
 	 * @param idCenario : id do cenário que será verificado
 	 * @return Um inteiro que representa aquantidade de apostas do cenário
 	 */
-	public int totalApostas(int idCenario) {
-		if(idCenario <= 0) throw new CampoInvalidoException("Erro na consulta do valor total de apostas: Cenario invalido");
-		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
+	public int totalDeApostas(int idCenario) {
+		if(idCenario <= 0) throw new CampoInvalidoException("Erro na consulta do total de apostas: Cenario invalido");
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException("Erro na consulta do total de apostas: Cenario nao cadastrado");
 		return this.cenarios.get(idCenario).totalApostas();
 	}
 
@@ -139,7 +140,7 @@ public class CenarioController {
 	 * @return A representação textual obtida
 	 */ 
 	public String exibirApostas(int idCenario) {
-		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException("Erro no cadastro de aposta: Cenario nao cadastrado");
 		Cenario cenario = this.cenarios.get(idCenario);
 		return cenario.exibiApostas();
 	}
@@ -151,7 +152,7 @@ public class CenarioController {
 	 */
 	public void fecharAposta(int idCenario, boolean ocorreu) {
 		if(idCenario <=0) throw new CampoInvalidoException("Erro ao fechar aposta: Cenario invalido");
-		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException("Erro ao fechar aposta: Cenario nao cadastrado");
 		Cenario cenario  = this.cenarios.get(idCenario);
 		cenario.ocorrer(ocorreu);
 	}
@@ -162,9 +163,10 @@ public class CenarioController {
 	 * @return o valor do caixa do cenário
 	 */
 	public int getCaixaCenario(int idCenario) {
-		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
+		if(idCenario<=0) throw new CampoInvalidoException("Erro na consulta do caixa do cenario: Cenario invalido");
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException("Erro na consulta do caixa do cenario: Cenario nao cadastrado");
 		Cenario cenario = this.cenarios.get(idCenario);
-		if(!cenario.isEncerrado()) throw new CenarioNaoEncerradoException();
+		if(!cenario.isEncerrado()) throw new CenarioNaoEncerradoException("Erro na consulta do caixa do cenario: Cenario ainda esta aberto");
 		return cenario.calculaCaixa(this.taxa);
 	}
 
@@ -175,10 +177,10 @@ public class CenarioController {
 	 */
 	public int getTotalRateio(int idCenario) {
 		if(idCenario <= 0) throw new CampoInvalidoException("Erro na consulta do total de rateio do cenario: Cenario invalido");
-		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException();
+		if(!this.cenarios.containsKey(idCenario)) throw new CenarioNaoCadastradoException("Erro na consulta do total de rateio do cenario: Cenario nao cadastrado");
 		Cenario cenario  = this.cenarios.get(idCenario);
-		if(!cenario.isEncerrado()) throw new CenarioNaoEncerradoException();
-		return cenario.getCaixa()-cenario.calculaCaixa(taxa);
+		if(!cenario.isEncerrado()) throw new CenarioNaoEncerradoException("Erro na consulta do total de rateio do cenario: Cenario ainda esta aberto");
+		return (int) (cenario.getCaixa() - cenario.calculaCaixa(taxa));
 	}
 
 	/**
@@ -186,7 +188,12 @@ public class CenarioController {
 	 * @return o valor do caixa
 	 */
 	public int getCaixa() {
-		return this.caixa;
+		int caixas = 0;
+		for(Cenario c : this.cenarios.values()) {
+			if(c.isEncerrado())
+				caixas += c.calculaCaixa(taxa);
+		}
+		return this.caixa + caixas;
 	}
 
 }

@@ -4,7 +4,7 @@ package com.samuel.lab.exception;
 public class CenarioJaEncerradoException extends RuntimeException {
 
 	public CenarioJaEncerradoException() {
-	super("O Cenário já foi encerrado");
+	super("Erro ao fechar aposta: Cenario ja esta fechado");
 	}
 
 }

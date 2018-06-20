@@ -10,22 +10,23 @@ import easyaccept.EasyAccept;
  * @author Samuel Pereira de Vasconcelos
  *
  */
-public class Facade implements SistemadeApostas{
-	
+public class Facade implements SistemadeApostas {
+
 	/**
-	 * Controller utilizado para controlar toas as atividades de cenários 
+	 * Controller utilizado para controlar toas as atividades de cenários
 	 */
 	private CenarioController cenarioController;
-	
-	/**
-	 * 	Método responsável por inicializar a facade
-	 * @param caixa : Um inteiro representando o caixa inicial do sistema
-	 * @param taxa : Um valor de ponto fluente que representa a taxa cobrada pelo sistema em cima do total arrecardado pelos cenários 
-	 */
-	public Facade(int centavos,double taxa) {
-		this.inicializa(centavos, taxa);
-	}
-	
+
+	// /**
+	// * Método responsável por inicializar a facade
+	// * @param caixa : Um inteiro representando o caixa inicial do sistema
+	// * @param taxa : Um valor de ponto fluente que representa a taxa cobrada pelo
+	// sistema em cima do total arrecardado pelos cenários
+	// */
+	// public Facade(int centavos,double taxa) {
+	// this.inicializa(centavos, taxa);
+	// }
+
 	/**
 	 * Método para inicializar o sistema
 	 * 
@@ -36,17 +37,18 @@ public class Facade implements SistemadeApostas{
 	 */
 	@Override
 	public void inicializa(int centavos, double taxa) {
-		this.cenarioController = new CenarioController(centavos,taxa);
+		this.cenarioController = new CenarioController(centavos, taxa);
 	}
 
 	/**
 	 * Método responsável por retornar o caixa do sistema
+	 * 
 	 * @return um inteiro com o valor em caixa do sistema
 	 */
 	public int getCaixa() {
 		return this.cenarioController.getCaixa();
 	}
-	
+
 	/**
 	 * Método responsável por cadastrar um cenário
 	 * 
@@ -69,8 +71,9 @@ public class Facade implements SistemadeApostas{
 	public String exibirCenario(int id) {
 		return cenarioController.exibirCenario(id);
 	}
-	
-	/**	 * Método responsável por exibir todos os cenários cadastrados no sistema
+
+	/**
+	 * * Método responsável por exibir todos os cenários cadastrados no sistema
 	 * 
 	 * @return : Uma String representando todos os cenários do sistema
 	 */
@@ -78,7 +81,7 @@ public class Facade implements SistemadeApostas{
 	public String exibirCenarios() {
 		return cenarioController.exibirCenarios();
 	}
-	
+
 	/**
 	 * Método responsável por cadastrar uma aposta
 	 * 
@@ -93,9 +96,9 @@ public class Facade implements SistemadeApostas{
 	 */
 	@Override
 	public void cadastrarAposta(int cenario, String apostador, int valor, String previsao) {
-		this.cenarioController.apostar(cenario,apostador,valor, previsao);
+		this.cenarioController.cadastrarAposta(cenario, apostador, valor, previsao);
 	}
-	
+
 	/**
 	 * Método responsável por calcular o valor total arrecardado com as apostas de
 	 * um cenário
@@ -106,7 +109,7 @@ public class Facade implements SistemadeApostas{
 	 */
 	@Override
 	public int valorTotalDeApostas(int cenario) {
-		return  this.cenarioController.valorTotal(cenario);
+		return this.cenarioController.valorTotalDeApostas(cenario);
 	}
 
 	/**
@@ -118,7 +121,7 @@ public class Facade implements SistemadeApostas{
 	 */
 	@Override
 	public int totalDeApostas(int cenario) {
-		return  this.cenarioController.totalApostas(cenario);
+		return this.cenarioController.totalDeApostas(cenario);
 	}
 
 	/**
@@ -130,7 +133,7 @@ public class Facade implements SistemadeApostas{
 	 */
 	@Override
 	public String exibeApostas(int cenario) {
-		return  this.cenarioController.exibirApostas(cenario);
+		return this.cenarioController.exibirApostas(cenario);
 	}
 
 	/**
@@ -143,7 +146,7 @@ public class Facade implements SistemadeApostas{
 	 */
 	@Override
 	public void fecharAposta(int cenario, boolean ocorreu) {
-		this.cenarioController.fecharAposta(cenario,ocorreu);
+		this.cenarioController.fecharAposta(cenario, ocorreu);
 	}
 
 	/**
@@ -171,11 +174,12 @@ public class Facade implements SistemadeApostas{
 	public int getTotalRateioCenario(int cenario) {
 		return this.cenarioController.getTotalRateio(cenario);
 	}
-	
-	
+
 	public static void main(String[] args) {
-		args = new String[]{"com.samuel.lab.model.Facade","easy_accept/us1_test.txt","easy_accept/us2_test.txt","easy_accept/us3_test.txt","easy_accept/us4_test.txt"};
+
+		args = new String[] { "com.samuel.lab.model.Facade", "easy_accept/us1_test.txt", "easy_accept/us2_test.txt",
+				"easy_accept/us3_test.txt", "easy_accept/us4_test.txt" };
 		EasyAccept.main(args);
-		
+
 	}
 }
