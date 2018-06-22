@@ -5,15 +5,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 
 import com.samuel.lab.exception.CampoInvalidoException;
 import com.samuel.lab.exception.CenarioJaEncerradoException;
 import com.samuel.lab.exception.CenarioSemApostasException;
-import com.samuel.lab.model.Aposta;
 import com.samuel.lab.model.Cenario;
 
 import org.junit.Test;
