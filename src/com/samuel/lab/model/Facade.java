@@ -57,7 +57,7 @@ public class Facade implements SistemadeApostas {
 	 */
 	@Override
 	public int cadastrarCenario(String descricao) {
-		return this.cenarioController.cadastrar(descricao);
+		return this.cenarioController.cadastrarCenario(descricao);
 	}
 
 	/**
@@ -183,8 +183,38 @@ public class Facade implements SistemadeApostas {
 	public static void main(String[] args) {
 
 		args = new String[] { "com.samuel.lab.model.Facade", "easy_accept/us1_test.txt", "easy_accept/us2_test.txt",
-				"easy_accept/us3_test.txt", "easy_accept/us4_test.txt" };
+				"easy_accept/us3_test.txt", "easy_accept/us4_test.txt","easy_accept/us5_test.txt","easy_accept/us6_test.txt" };
 		EasyAccept.main(args);
 
+	}
+
+	@Override
+	public int cadastrarCenario(String descricao, int bonus) {
+		return this.cenarioController.cadastrarCenario(descricao, bonus);
+	}
+
+	@Override
+	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int seguro,int custo) {
+		return this.cenarioController.cadastrarApostaSeguraValor( cenario, apostador, valor, previsao, seguro,custo);
+	}
+
+	@Override
+	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa,int custo) {
+		return this.cenarioController.cadastrarApostaSeguraTaxa( cenario, apostador, valor, previsao, taxa,custo);
+	}
+
+	@Override
+	public int alterarSeguroValor(int cenario, int aposta, int valor) {
+		return this.cenarioController.alterarSeguro(cenario,aposta,valor);
+	}
+
+	@Override
+	public int alterarSeguroTaxa(int cenario, int aposta, double taxa) {
+		try {
+		return this.cenarioController.alterarSeguro(cenario,aposta,taxa);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
 	}
 }

@@ -211,24 +211,24 @@ public class CenarioTest {
 		this.cenario.apostar("Samuel", -100 , "");
 	}
 
-	/**
-	 * Testa o processo de capiturar as apostas de um ceário
-	 */
-	@Test
-	public void testGetApostas() {
-		List<Aposta> apostas = new ArrayList<Aposta>();
-		
-		Aposta aposta1 = new Aposta("Samuel", 10, true);
-		Aposta aposta2 = new Aposta("Samuel", 10, false);
-		
-		apostas.add(aposta1);
-		apostas.add(aposta2);
-		
-		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
-		this.cenario.apostar("Samuel", 10, "N VAI ACONTECER");
-		
-		assertEquals(apostas, this.cenario.getApostas());
-	}
+//	/**
+//	 * Testa o processo de capiturar as apostas de um ceário
+//	 */
+//	@Test
+//	public void testGetApostas() {
+//		List<Aposta> apostas = new ArrayList<Aposta>();
+//		
+//		Aposta aposta1 = new Aposta("Samuel", 10, true);
+//		Aposta aposta2 = new Aposta("Samuel", 10, false);
+//		
+//		apostas.add(aposta1);
+//		apostas.add(aposta2);
+//		
+//		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
+//		this.cenario.apostar("Samuel", 10, "N VAI ACONTECER");
+//		
+//		assertEquals(apostas, this.cenario.getApostas());
+//	}
 
 	/**
 	 * Testa o processo de modificar um cenário para ocorrido
@@ -257,15 +257,15 @@ public class CenarioTest {
 		assertEquals(10, this.cenario.calculaCaixa(0.10));
 	}
 
-	/**
-	 * Testa o processo que recupera o caia do sistema
-	 */
-	@Test
-	public void testGetCaixaTotal() {
-		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
-		this.cenario.apostar("Maria", 100, "N VAI ACONTECER");
-		assertEquals(110, this.cenario.getCaixaTotal());
-	}
+//	/**
+//	 * Testa o processo que recupera o caia do sistema
+//	 */
+//	@Test
+//	public void testGetCaixaTotal() {
+//		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
+//		this.cenario.apostar("Maria", 100, "N VAI ACONTECER");
+//		assertEquals(110, this.cenario.getCaixaTotal());
+//	}
 
 	/**
 	 * Testa o processo que recupera o valor total acumulado com as apostas do cenário
@@ -274,7 +274,7 @@ public class CenarioTest {
 	public void testValorTotalDeApostas() {
 		this.cenario.apostar("Samuel", 10, "VAI ACONTECER");
 		this.cenario.apostar("Maria", 100, "N VAI ACONTECER");
-		assertEquals(110, this.cenario.valorTotalDeApostas());
+		assertEquals(110, this.cenario.getValorTotalDeApostas());
 	}
 	
 	/**

@@ -113,5 +113,16 @@ public interface SistemadeApostas {
 	 * @return Um inteiro com o valor de rateio
 	 */
 	public int getTotalRateioCenario(int cenario);
+	
+	public int cadastrarCenario(String descricao, int bonus);
+	
+	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int seguro, int custo);
+	
+	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa, int custo);
+	
+	public int alterarSeguroValor(int cenario, int apostaAssegurada, int valor);
+	
+	public int alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa);
+	
 
 }
