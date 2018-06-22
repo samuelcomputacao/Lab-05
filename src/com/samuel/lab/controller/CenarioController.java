@@ -94,9 +94,7 @@ public class CenarioController {
 	 */
 	public String exibirCenarios() {
 		String retorno = "";
-		// List<Integer> keysOrdenadas = setToList();
 		for (Cenario cenario : this.cenarios.values()) {
-			// cenario = this.cenarios.get(key);
 			if (retorno.isEmpty()) {
 				retorno = cenario.toString();
 			} else {
@@ -250,7 +248,7 @@ public class CenarioController {
 			if (c.getBonus() > 0) {
 				bonus += c.getBonus();
 			}
-			custo += c.getCusto();
+			custo += c.getCustosApostas();
 		}
 		return (this.caixa - bonus - seguro) + caixasCenarios + custo;
 	}
@@ -318,17 +316,6 @@ public class CenarioController {
 			throw new CampoInvalidoException("Erro no cadastro de aposta assegurada por taxa: Cenario invalido");
 		if (!this.cenarios.containsKey(idCenario))
 			throw new CenarioNaoCadastradoException("Erro no cadastro de aposta assegurada por taxa: Cenario invalido");
-		if (apostador == null || apostador.trim().length() == 0)
-			throw new CampoInvalidoException(
-					"Erro no cadastro de aposta assegurada por taxa: Apostador nao pode ser vazio ou nulo");
-		if (valor <= 0)
-			throw new CampoInvalidoException(
-					"Erro no cadastro de aposta assegurada por taxa: Valor nao pode ser menor ou igual a zero");
-		if (previsao == null || previsao.trim().length() == 0)
-			throw new CampoInvalidoException(
-					"Erro no cadastro de aposta assegurada por taxa: Previsao nao pode ser vazia ou nula");
-		if (!(previsao.equals("VAI ACONTECER") || previsao.equals("N VAI ACONTECER")))
-			throw new CampoInvalidoException("Erro no cadastro de aposta assegurada por taxa: Previsao invalida");
 		Cenario cenario = this.cenarios.get(idCenario);
 		return cenario.apostarSeguroTaxa(apostador, valor, previsao, taxa, custo);
 	}
@@ -358,9 +345,9 @@ public class CenarioController {
 	 */
 	public int alterarSeguro(int idCenario, int aposta, double taxa) {
 		if (idCenario <= 0)
-			throw new CampoInvalidoException("a fazer");
+			throw new CampoInvalidoException("Erro ao alterar aposta : Cenario invalido");
 		if (!this.cenarios.containsKey(idCenario))
-			throw new CenarioNaoCadastradoException("a fazer");
+			throw new CenarioNaoCadastradoException("Erro ao alterar aposta: Cenario nao cadastrado");
 
 		Cenario cenario = this.cenarios.get(idCenario);
 		return cenario.alterarSeguro(aposta, taxa);

@@ -12,19 +12,17 @@ public class Aposta {
 	/**
 	 * Representa o nome do apostador 
 	 */
-	protected String apostador;
+	private String apostador;
 	
 	/**
 	 * Representa o valor em centavos da aposta
 	 */
-	protected int valor;
+	private int valor;
 	
 	/**
 	 * Representa a previsão da aposta segundo o apostador
 	 */
-	protected boolean previsao;
-	
-	protected int custo;
+	private boolean previsao;
 	
 	/**
 	 * Método responsável por inicializar uma aposta no sistema
@@ -38,15 +36,8 @@ public class Aposta {
 		this.apostador = apostador;
 		this.valor = valor;
 		this.previsao = previsao;
-		this.custo = 0;
-	}
-	
-	public Aposta(String apostador, int valor, boolean previsao,int custo) {
-		this(apostador,valor,previsao);
-		this.custo = custo;
 	}
 
-	
 	/**
 	 * Método acessível para o valor da aposta
 	 * @return Um valor inteiro representando o valor da aposta em centavos
@@ -110,9 +101,4 @@ public class Aposta {
 			return false;
 		return true;
 	}
-	
-	public int getCusto() {
-		return this.custo;
-	}
-	
 }
