@@ -1,5 +1,7 @@
 package com.samuel.lab.model;
 
+import com.samuel.lab.exception.CampoInvalidoException;
+
 /**
  * Classe que representa uma aposta assegurada por um valor no sistema
  * @author Samuel Pereeira de Vasconcelos
@@ -22,6 +24,7 @@ public class ApostaSeguroValor extends ApostaAssegurada{
 	 */
 	public ApostaSeguroValor(String apostador, int valor, boolean previsao,int seguro, int custo) {
 		super(apostador, valor, previsao,custo);
+		if(seguro <= 0) throw new CampoInvalidoException("Erro no cadastro de aposta: Seguro inválido");
 		this.seguro = seguro;
 	}
 	
@@ -70,6 +73,7 @@ public class ApostaSeguroValor extends ApostaAssegurada{
 	 * @param seguro : O novo seguro da aposta
 	 */
 	public void setSeguro(int seguro) {
+		if(seguro <= 0) throw new CampoInvalidoException("Erro ao modificar o valor do seguro da aposta: Seguro inválido");
 		this.seguro = seguro;
 	}
 	

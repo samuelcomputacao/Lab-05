@@ -31,7 +31,7 @@ public class Aposta {
 	 * @param previsao : Previsão para a aposta segundo o apostador
 	 */
 	public Aposta(String apostador, int valor, boolean previsao) {
-		if(apostador== null || apostador.isEmpty()) throw new CampoInvalidoException("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
+		if(apostador== null || apostador.trim().isEmpty()) throw new CampoInvalidoException("Erro no cadastro de aposta: Apostador nao pode ser vazio ou nulo");
 		if(valor<=0 ) throw new CampoInvalidoException("Erro no cadastro de aposta: Valor nao pode ser menor ou igual a zero");
 		this.apostador = apostador;
 		this.valor = valor;

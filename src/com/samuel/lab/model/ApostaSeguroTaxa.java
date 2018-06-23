@@ -1,5 +1,7 @@
 package com.samuel.lab.model;
 
+import com.samuel.lab.exception.CampoInvalidoException;
+
 /**
  * Classe que representa uma aposta assegurada por uma taxa
  * @author Samuel Pereira de Vasconcelos
@@ -22,6 +24,7 @@ public class ApostaSeguroTaxa extends ApostaAssegurada{
 	 */
 	public ApostaSeguroTaxa(String apostador, int valor, boolean previsao,double taxa,int custo) {
 		super(apostador, valor, previsao,custo);
+		if(taxa <= 0) throw new CampoInvalidoException("Erro no cadastro de aposta: taxa inválida");
 		this.taxa = taxa;
 		
 	}
@@ -73,6 +76,7 @@ public class ApostaSeguroTaxa extends ApostaAssegurada{
 	 * @param taxa : Representa a nova taxa
 	 */
 	public void setTaxa(double taxa) {
+		if(taxa<=0) throw new CampoInvalidoException("Erro ao alterar o valor da taxa: Taxa inválida");
 		this.taxa = taxa;
 	}
 
