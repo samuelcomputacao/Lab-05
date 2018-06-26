@@ -70,15 +70,6 @@ public class ApostaSeguroTaxa extends ApostaAssegurada{
 			return false;
 		return true;
 	}
-	
-	/**
-	 * Método responsável por alterar o valor da taxa da aposta
-	 * @param taxa : Representa a nova taxa
-	 */
-	public void setTaxa(double taxa) {
-		if(taxa<=0) throw new CampoInvalidoException("Erro ao alterar o valor da taxa: Taxa inválida");
-		this.taxa = taxa;
-	}
 
 	/**
 	 * Método responsável por recuperar o valor da taxa da aposta

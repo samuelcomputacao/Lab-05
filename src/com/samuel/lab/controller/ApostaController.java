@@ -48,11 +48,6 @@ public class ApostaController {
 	 * Representa a quantidade de apostas cadastradas
 	 */
 	private int quantidadeApostas;
-	
-	/**
-	 * Representa a soma dos custos das apostas asseguradas
-	 */
-	private int custos;
 
 	/**
 	 * Método responsável por inicializar o controlador de aposta
@@ -77,6 +72,8 @@ public class ApostaController {
 	 *            : Previsão da aposta para o cenário segundo o apostador
 	 */
 	public void cadastrar(String apostador, int valor, String previsao) {
+		if (previsao == null || previsao.trim().isEmpty())
+			throw new CampoInvalidoException("Erro no cadastro de aposta: Previsao nao pode ser vazia ou nula");
 		Aposta aposta = null;
 		if (previsao.equals("VAI ACONTECER")) {
 			aposta = new Aposta(apostador, valor, true);
@@ -159,7 +156,6 @@ public class ApostaController {
 					valor += aposta.getValor();
 				}
 			}
-
 		}
 
 		for (ApostaSeguroValor aposta : this.apostasSeguroValor.values()) {
@@ -205,7 +201,7 @@ public class ApostaController {
 	 * @return um String representando todas as Strings do cenário
 	 */
 	public String exibir() {
-		if (this.apostas.isEmpty())
+		if (this.apostas.isEmpty() && this.apostasSeguroTaxa.isEmpty() && this.apostasSeguroValor.isEmpty())
 			throw new CenarioSemApostasException();
 		String retorno = "";
 		for (Aposta aposta : this.apostas) {
@@ -264,7 +260,6 @@ public class ApostaController {
 		this.idBaseValor++;
 		this.valorTotal+= aposta.getValor();
 		this.quantidadeApostas++;
-		this.custos += aposta.getCusto();
 		return this.idBaseValor - 1;
 	}
 	
@@ -292,7 +287,6 @@ public class ApostaController {
 		this.apostasSeguroTaxa.put(this.idBaseTaxa, aposta);
 		this.idBaseTaxa++;
 		this.quantidadeApostas++;
-		this.custos += aposta.getCusto();
 		return idBaseTaxa - 1;
 	}
 
@@ -307,13 +301,14 @@ public class ApostaController {
 			throw new CampoInvalidoException("Erro ao alterar a aposta: Aposta inválida");
 		if (!this.apostasSeguroTaxa.containsKey(idAposta))
 			throw new ApostaNaoCadastradaException("Erro ao alterar a aposta: Aposta não cadastrada");
-		ApostaSeguroValor aposta = this.apostasSeguroValor.get(idAposta);
-		aposta.setSeguro(seguro);
-		return idAposta;
+		ApostaSeguroTaxa aposta = this.apostasSeguroTaxa.get(idAposta);
+		String previsao = aposta.isAcontece()?"VAI ACONTECER":"N VAI ACONTECER";
+		this.apostasSeguroTaxa.remove(idAposta);
+		return this.cadastrar(aposta.getApostador(), aposta.getValor(), previsao, seguro, aposta.getCusto());
 	}
 
 	/**
-	 * Método responsável poralterar o valor da taxa de seguro de uma aposta
+	 * Método responsável por alterar o valor da taxa de seguro de uma aposta
 	 * @param idAposta : id da aposta que será alterada
 	 * @param taxa : nova taxa da aposta
 	 * @return : id da aposta que foi alterada
@@ -321,11 +316,12 @@ public class ApostaController {
 	public int alterar(int idAposta, double taxa) {
 		if (idAposta <= 0)
 			throw new CampoInvalidoException("Erro ao alterar a aposta: Aposta inválida");
-		if (!this.apostasSeguroTaxa.containsKey(idAposta))
+		if (!this.apostasSeguroValor.containsKey(idAposta))
 			throw new ApostaNaoCadastradaException("Erro ao alterar a aposta: Aposta não cadastrada");
-		ApostaSeguroTaxa aposta = this.apostasSeguroTaxa.get(idAposta);
-		aposta.setTaxa(taxa);
-		return idAposta;
+		ApostaSeguroValor aposta = this.apostasSeguroValor.get(idAposta);
+		String previsao = aposta.isAcontece()?"VAI ACONTECER":"N VAI ACONTECER";
+		this.apostasSeguroValor.remove(idAposta);
+		return this.cadastrar(aposta.getApostador(), aposta.getValor(), previsao, taxa, aposta.getCusto());
 	}
 
 	/**
@@ -361,7 +357,14 @@ public class ApostaController {
 	 * @return : o valor do custo das apostas
 	 */
 	public int getCustos() {
-		return this.custos;
+		int custos = 0;
+		for(ApostaSeguroValor aposta : this.apostasSeguroValor.values()) {
+			custos += aposta.getCusto();
+		}
+		for(ApostaSeguroTaxa aposta : this.apostasSeguroTaxa.values()) {
+			custos += aposta.getCusto();
+		}
+		return custos;
 	}
 	
 }

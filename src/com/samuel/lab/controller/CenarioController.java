@@ -278,7 +278,7 @@ public class CenarioController {
 	 * @param custo : Custo da aposta para o cenário
 	 * @return o id da aposta que será cadastrada
 	 */
-	public int cadastrarApostaSeguraValor(int idCenario, String apostador, int valor, String previsao, int seguro,
+	public int cadastrarAposta(int idCenario, String apostador, int valor, String previsao, int seguro,
 			int custo) {
 		if (idCenario <= 0)
 			throw new CampoInvalidoException("Erro no cadastro de aposta assegurada por valor: Cenario invalido");
@@ -310,7 +310,7 @@ public class CenarioController {
 	 * @param custo : o custo da aposta para o cenário
 	 * @return :id da aposta que foi cadastrada
 	 */
-	public int cadastrarApostaSeguraTaxa(int idCenario, String apostador, int valor, String previsao, double taxa,
+	public int cadastrarAposta(int idCenario, String apostador, int valor, String previsao, double taxa,
 			int custo) {
 		if (idCenario <= 0)
 			throw new CampoInvalidoException("Erro no cadastro de aposta assegurada por taxa: Cenario invalido");

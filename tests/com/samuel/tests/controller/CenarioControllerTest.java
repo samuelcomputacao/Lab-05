@@ -45,7 +45,7 @@ public class CenarioControllerTest {
 	 */
 	@Test(expected = CampoInvalidoException.class)
 	public void testCadastrarVazio() {
-		this.cenarioController.cadastrarCenario("");
+		this.cenarioController.cadastrarCenario(" ");
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class CenarioControllerTest {
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarApostadorVazio() {
 		this.cenarioController.cadastrarCenario("Brasil Hexa");
-		this.cenarioController.cadastrarAposta(1, "", 1000, "VAI ACONTECER");
+		this.cenarioController.cadastrarAposta(1, " ", 1000, "VAI ACONTECER");
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class CenarioControllerTest {
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostarPrevisaoVazia() {
 		this.cenarioController.cadastrarCenario("Brasil Hexa");
-		this.cenarioController.cadastrarAposta(1, "Samuel", 0, "");
+		this.cenarioController.cadastrarAposta(1, "Samuel", 0, " ");
 	}
 	
 	/**
@@ -201,15 +201,6 @@ public class CenarioControllerTest {
 	public void testValorTotalCenarioInvalido() {
 		this.cenarioController.valorTotalDeApostas(-1);
 	}
-//	
-//	/**
-//	 * Testa o carregamento do valor total de um cenário sem que ele tenha apostas cadastradas
-//	 */
-//	@Test(expected = CenarioSemApostasException.class)
-//	public void testValorTotalCenarioSemApostas() {
-//		this.cenarioController.cadastrarCenario("Brasil Hexa");
-//		this.cenarioController.valorTotalDeApostas(1);
-//	}
 
 	/**
 	 * Testa o carregamento do total de apostas cadastrada em um cenário
@@ -219,7 +210,9 @@ public class CenarioControllerTest {
 		this.cenarioController.cadastrarCenario("Brasil Hexa");
 		this.cenarioController.cadastrarAposta(1, "Samuel", 100,"N VAI ACONTECER");
 		this.cenarioController.cadastrarAposta(1, "Samuel", 100,"VAI ACONTECER");
-		assertEquals(2, this.cenarioController.totalDeApostas(1));
+		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "VAI ACONTECER", 0.3, 100);
+		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "VAI ACONTECER", 30, 100);
+		assertEquals(4, this.cenarioController.totalDeApostas(1));
 	}
 	
 	/**
@@ -237,15 +230,6 @@ public class CenarioControllerTest {
 	public void testTotalApostasCenarioInvalido() {
 		this.cenarioController.totalDeApostas(-1);
 	}
-	
-//	/**
-//	 * Testa o carregamento do total de apostas de um cenario não cadastrado
-//	 */
-//	@Test(expected = CenarioSemApostasException.class)
-//	public void testTotalApostasCenarioSemApostas() {
-//		this.cenarioController.cadastrarCenario("Brasil Hexa");
-//		this.cenarioController.totalDeApostas(1);
-//	}
 
 	/**
 	 * Testa a exibição de todas as apostas de um cenário
@@ -253,12 +237,15 @@ public class CenarioControllerTest {
 	@Test
 	public void testExibirApostas() {
 		String str = "Samuel - R$1,00 - N VAI ACONTECER" + System.lineSeparator();
-		str += "Maria - R$1,00 - VAI ACONTECER";
+		str += "Maria - R$1,00 - VAI ACONTECER" + System.lineSeparator();
+		str += "Samuel - R$1,00 - VAI ACONTECER - ASSEGURADA (VALOR) - R$ 30,00" + System.lineSeparator();
+		str += "Samuel - R$1,00 - VAI ACONTECER - ASSEGURADA (TAXA) - R$ 30,00";
 		
 		this.cenarioController.cadastrarCenario("Brasil Hexa");
 		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "N VAI ACONTECER");
 		this.cenarioController.cadastrarAposta(1, "Maria", 100, "VAI ACONTECER");
-		
+		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "VAI ACONTECER", 0.3, 100);
+		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "VAI ACONTECER", 30, 100);
 		assertEquals(str, this.cenarioController.exibirApostas(1));
 		
 	}
@@ -318,18 +305,6 @@ public class CenarioControllerTest {
 		this.cenarioController.getCaixaCenario(1);
 	}
 	
-
-//	/**
-//	 * Testa o carregamento do caixa  de um cenário que será destinado ao cofre do sistema com o cenário sem apostas
-//	 */
-//	@Test(expected = CenarioSemApostasException.class)
-//	public void testGetCaixaIntcenarioSemApostas() {
-//		this.cenarioController.cadastrarCenario("Brasil Hexa");
-//		this.cenarioController.fecharAposta(1, true);
-//		this.cenarioController.getCaixaCenario(1);
-//	}
-
-
 	/**
 	 * Testa o carregamento do rateio de um cenário
 	 */
@@ -352,16 +327,6 @@ public class CenarioControllerTest {
 	}
 	
 
-//	/**
-//	 * Testa o carregamento do rateiro de um cenário sem apostas 
-//	 */
-//	@Test(expected = CenarioSemApostasException.class)
-//	public void testGetTotalRateioCenarioSemApostas() {
-//		this.cenarioController.cadastrarCenario("Brasil Hexa");
-//		this.cenarioController.fecharAposta(1, true);
-//		this.cenarioController.getTotalRateio(1);
-//	}
-	
 
 	/**
 	 * Testa o carregamento do rateio de um cenário não encerrado
@@ -381,5 +346,15 @@ public class CenarioControllerTest {
 	public void testGetCaixa() {
 		assertEquals(100, this.cenarioController.getCaixa());
 	}
+	
+//	@Test
+//	public void testApostarSeguroTaxa() {
+//		this.cenarioController.cadastrarCenario("Brasil Hexa");
+//		this.cenarioController.cadastrarApostaSeguraTaxa(1, "Samuel", 100, "VAI ACONTECER", 0.3, 100);
+//		String str = "Samuel - R$1,00 - VAI ACONTECER - ASSEGURADA (TAXA) - R$ 30,00";
+//		assertEquals(str,this.cenarioController.
+//		System.out.println(this.cenarioController.exibirApostas(1));
+//		
+//	}
 
 }

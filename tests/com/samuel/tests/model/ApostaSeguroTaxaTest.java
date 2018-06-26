@@ -129,33 +129,6 @@ public class ApostaSeguroTaxaTest {
 	}
 
 	/**
-	 * Testa o modificador da taxa da aposta quando deve acontecer
-	 */
-	@Test
-	public void testSetTaxa() {
-		this.aposta.setTaxa(0.3);
-		assertTrue(0.3 == this.aposta.getTaxa());
-	}
-	
-	/**
-	 * Testa o modificador da taxa da aposta quando recebe uma taxa inválida
-	 */
-	@Test(expected = CampoInvalidoException.class)
-	public void testSetTaxaInvalida() {
-		this.aposta.setTaxa(0);
-		assertTrue(0.3 == this.aposta.getTaxa());
-	}
-	
-	/**
-	 * Testa o modificador da taxa da aposta quando recebe uma taxa inválida
-	 */
-	@Test(expected = CampoInvalidoException.class)
-	public void testSetTaxaNegativa() {
-		this.aposta.setTaxa(-54);
-		assertTrue(0.3 == this.aposta.getTaxa());
-	}
-
-	/**
 	 * Testa o recuperador da taxa da aposta
 	 */
 	@Test

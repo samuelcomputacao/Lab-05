@@ -52,7 +52,7 @@ public class Cenario {
 	public Cenario(int id, String descricao) {
 		if (id <= 0)
 			throw new CampoInvalidoException("Erro no cadastro de aposta: Cenario invalido");
-		if (descricao == null || descricao.isEmpty())
+		if (descricao == null || descricao.trim().isEmpty())
 			throw new CampoInvalidoException("Erro no cadastro de cenario: Descricao nao pode ser vazia");
 		this.id = id;
 		this.descricao = descricao;

@@ -101,4 +101,12 @@ public class Aposta {
 			return false;
 		return true;
 	}
+	
+	/**
+	 * Método resposável por recuperar o apostador da aposta
+	 * @return : O nome do apostador
+	 */
+	public String getApostador() {
+		return this.apostador;
+	}
 }

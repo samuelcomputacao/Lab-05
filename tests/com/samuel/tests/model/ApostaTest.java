@@ -43,7 +43,7 @@ public class ApostaTest {
 	 */
 	@Test(expected = CampoInvalidoException.class)
 	public void testApostaApostadorVazio() {
-		this.aposta = new Aposta("", 1000, true);
+		this.aposta = new Aposta(" ", 1000, true);
 	}
 	
 	/**

@@ -67,15 +67,6 @@ public class ApostaSeguroValor extends ApostaAssegurada{
 			return false;
 		return true;
 	}
-
-	/**
-	 * Método responsável por alterar o valor do seguro
-	 * @param seguro : O novo seguro da aposta
-	 */
-	public void setSeguro(int seguro) {
-		if(seguro <= 0) throw new CampoInvalidoException("Erro ao modificar o valor do seguro da aposta: Seguro inválido");
-		this.seguro = seguro;
-	}
 	
 	/**
 	 * Método responsável por recuperar o valor do seguro da aposta

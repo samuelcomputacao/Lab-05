@@ -16,17 +16,7 @@ public class Facade implements SistemadeApostas {
 	 * Controller utilizado para controlar toas as atividades de cenários
 	 */
 	private CenarioController cenarioController;
-
-	// /**
-	// * Método responsável por inicializar a facade
-	// * @param caixa : Um inteiro representando o caixa inicial do sistema
-	// * @param taxa : Um valor de ponto fluente que representa a taxa cobrada pelo
-	// sistema em cima do total arrecardado pelos cenários
-	// */
-	// public Facade(int centavos,double taxa) {
-	// this.inicializa(centavos, taxa);
-	// }
-
+	
 	/**
 	 * Método para inicializar o sistema
 	 * 
@@ -212,7 +202,7 @@ public class Facade implements SistemadeApostas {
 	 */
 	@Override
 	public int cadastrarApostaSeguraValor(int cenario, String apostador, int valor, String previsao, int seguro,int custo) {
-		return this.cenarioController.cadastrarApostaSeguraValor( cenario, apostador, valor, previsao, seguro,custo);
+		return this.cenarioController.cadastrarAposta( cenario, apostador, valor, previsao, seguro,custo);
 	}
 
 	/**
@@ -227,7 +217,7 @@ public class Facade implements SistemadeApostas {
 	 */
 	@Override
 	public int cadastrarApostaSeguraTaxa(int cenario, String apostador, int valor, String previsao, double taxa,int custo) {
-		return this.cenarioController.cadastrarApostaSeguraTaxa( cenario, apostador, valor, previsao, taxa,custo);
+		return this.cenarioController.cadastrarAposta( cenario, apostador, valor, previsao, taxa,custo);
 	}
 
 	/**

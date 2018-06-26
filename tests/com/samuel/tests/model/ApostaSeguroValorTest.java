@@ -106,32 +106,6 @@ public class ApostaSeguroValorTest {
 		assertEquals(str, this.aposta.toString());
 	}
 	
-	/**
-	 * Testa o modificador do seguro da aposta quando ele deve acontecer
-	 */
-	@Test
-	public void testSetSeguro() {
-		this.aposta.setSeguro(300);
-		assertEquals(300, this.aposta.getSeguro());
-	}
-	
-	/**
-	 * Testa o modificador do seguro da aposta quando ele recebe uma seguro inválido
-	 */
-	@Test(expected = CampoInvalidoException.class)
-	public void testSetSeguroInvalido() {
-		this.aposta.setSeguro(0);
-
-	}
-	
-	/**
-	 * Testa o modificador do seguro da aposta quando ele recebe uma seguro negativo
-	 */
-	@Test(expected = CampoInvalidoException.class)
-	public void testSetSeguroNegativo() {
-		this.aposta.setSeguro(-300);
-
-	}
 
 	/**
 	 * Testa a recuperação do valor do seguro da aposta
