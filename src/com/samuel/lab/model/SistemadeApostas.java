@@ -164,5 +164,9 @@ public interface SistemadeApostas {
 	 */
 	public int alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa);
 	
+	public void alterarOrdem(String ordem);
+	
+	public String exibirCenarioOrdenado(int cenario);
+	
 
 }

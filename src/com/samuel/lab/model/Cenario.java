@@ -38,7 +38,7 @@ public class Cenario {
 
 	/**
 	 * Representao controlador das apostas de um cenário
- 	 */
+	 */
 	private ApostaController apostaController;
 
 	/**
@@ -63,9 +63,13 @@ public class Cenario {
 
 	/**
 	 * Método reposnável por inicializar um cenário com bônus
-	 * @param id : id do cenário que será inicnalizado
-	 * @param descricao : Descrição do cenário
-	 * @param bonus : Bônus do cenário
+	 * 
+	 * @param id
+	 *            : id do cenário que será inicnalizado
+	 * @param descricao
+	 *            : Descrição do cenário
+	 * @param bonus
+	 *            : Bônus do cenário
 	 */
 	public Cenario(int id, String descricao, int bonus) {
 		this(id, descricao);
@@ -121,14 +125,14 @@ public class Cenario {
 
 		if (this.encerrado) {
 			if (this.ocorreu) {
-				retorno += "finalizado (ocorreu)";
+				retorno += "Finalizado (ocorreu)";
 			} else {
-				retorno += "finalizado (n ocorreu)";
+				retorno += "Finalizado (n ocorreu)";
 			}
 		} else {
 			retorno += "Nao finalizado";
 		}
-		return retorno + (this.bonus > 0 ? String.format(" - R$ %.2f", Double.valueOf(this.bonus / 100)) : "");
+		return retorno + (this.bonus > 0 ? String.format(" - R$ %.2f", (this.bonus / 100.0)) : "");
 	}
 
 	/**
@@ -176,7 +180,7 @@ public class Cenario {
 	 *         adicionado ao sistema
 	 */
 	public int calculaCaixa(double taxa) {
-		return this.apostaController.calculaCaixaPerdedoras(this.ocorreu,taxa);
+		return this.apostaController.calculaCaixaPerdedoras(this.ocorreu, taxa);
 	}
 
 	/**
@@ -194,7 +198,7 @@ public class Cenario {
 	 * @return um valor inteiro representando o valor total acumulado do cenário em
 	 *         centavos
 	 */
-	public int getValorTotalDeApostas() { 
+	public int getValorTotalDeApostas() {
 		return this.apostaController.getValorTotal();
 	}
 
@@ -209,15 +213,18 @@ public class Cenario {
 	}
 
 	/**
-	 * Método responsável por calcular a quantidade de apostas cadastradas no cenário
+	 * Método responsável por calcular a quantidade de apostas cadastradas no
+	 * cenário
+	 * 
 	 * @return
 	 */
 	public int totalApostas() {
 		return this.apostaController.getQuantidade();
 	}
-	
+
 	/**
 	 * Método responsável por recuperar o bonus do cenário
+	 * 
 	 * @return : o bonus do funcionário
 	 */
 	public int getBonus() {
@@ -226,24 +233,37 @@ public class Cenario {
 
 	/**
 	 * Método responsável por cadastrar uma aposta assegurada por um valor
-	 * @param apostador : Nome do apostador
-	 * @param valor : Valor da aposta
-	 * @param previsao : Previsão da aposta
-	 * @param seguro : Valor do seguro da aposta
-	 * @param custo : Custo da aposta para o cenário
+	 * 
+	 * @param apostador
+	 *            : Nome do apostador
+	 * @param valor
+	 *            : Valor da aposta
+	 * @param previsao
+	 *            : Previsão da aposta
+	 * @param seguro
+	 *            : Valor do seguro da aposta
+	 * @param custo
+	 *            : Custo da aposta para o cenário
 	 * @return : O id da aposta cadastrada
 	 */
 	public int apostarSeguroValor(String apostador, int valor, String previsao, int seguro, int custo) {
-		return this.apostaController.cadastrar(apostador,valor,previsao,seguro,custo);
+		return this.apostaController.cadastrar(apostador, valor, previsao, seguro, custo);
 	}
-	
+
 	/**
-	 * Método responsável por cadastrar uma aposta assegurada por uma taxa relacionada ao seu valor
-	 * @param apostador : Nome do apostador
-	 * @param valor : Valor da aposta
-	 * @param previsao : Previsão da aposta
-	 * @param taxa : Valor da taxa que assegura a aposta
-	 * @param custo : Custo da aposta para o cenário
+	 * Método responsável por cadastrar uma aposta assegurada por uma taxa
+	 * relacionada ao seu valor
+	 * 
+	 * @param apostador
+	 *            : Nome do apostador
+	 * @param valor
+	 *            : Valor da aposta
+	 * @param previsao
+	 *            : Previsão da aposta
+	 * @param taxa
+	 *            : Valor da taxa que assegura a aposta
+	 * @param custo
+	 *            : Custo da aposta para o cenário
 	 * @return : O id da aposta cadastrada
 	 */
 	public int apostarSeguroTaxa(String apostador, int valor, String previsao, double taxa, int custo) {
@@ -263,18 +283,24 @@ public class Cenario {
 
 	/**
 	 * Método responsável por alterar o valor do seguro de uma aposta
-	 * @param idAposta : id da aposta que será alterada
-	 * @param seguro : novo valor do seguro
+	 * 
+	 * @param idAposta
+	 *            : id da aposta que será alterada
+	 * @param seguro
+	 *            : novo valor do seguro
 	 * @return : id da aposta que foi alterada
 	 */
 	public int alterarSeguro(int idAposta, int seguro) {
-		return this.apostaController.alterar(idAposta,seguro);
+		return this.apostaController.alterar(idAposta, seguro);
 	}
 
 	/**
 	 * Método responsável poralterar o valor da taxa de seguro de uma aposta
-	 * @param idAposta : id da aposta que será alterada
-	 * @param taxa : nova taxa da aposta
+	 * 
+	 * @param idAposta
+	 *            : id da aposta que será alterada
+	 * @param taxa
+	 *            : nova taxa da aposta
 	 * @return : id da aposta que foi alterada
 	 */
 	public int alterarSeguro(int idAposta, double taxa) {
@@ -283,6 +309,7 @@ public class Cenario {
 
 	/**
 	 * Método responsével por calcular o valor dos seguros de suas apostas
+	 * 
 	 * @return : o valor do seguro das apostas do cenário
 	 */
 	public int calculaSeguro() {
@@ -291,10 +318,15 @@ public class Cenario {
 
 	/**
 	 * Método responsável por recuperar o custo das apostas do cenário
+	 * 
 	 * @return : o valor do custo das apostas
 	 */
 	public int getCustosApostas() {
 		return this.apostaController.getCustos();
+	}
+
+	public String getNome() {
+		return this.descricao;
 	}
 
 }

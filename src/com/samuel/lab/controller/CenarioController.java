@@ -1,8 +1,14 @@
 package com.samuel.lab.controller;
 
-import java.util.SortedMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
+import com.samuel.lab.comparadores.ComparaApostas;
+import com.samuel.lab.comparadores.ComparaNome;
 import com.samuel.lab.exception.CampoInvalidoException;
 import com.samuel.lab.exception.CenarioNaoCadastradoException;
 import com.samuel.lab.exception.CenarioNaoEncerradoException;
@@ -34,7 +40,9 @@ public class CenarioController {
 	/**
 	 * Representa todos os cenários cadastrados
 	 */
-	private SortedMap<Integer, Cenario> cenarios;
+	private Map<Integer, Cenario> cenarios;
+	
+	private List<Cenario> cenariosOrdendos;
 
 	/**
 	 * Método responsável por inicializar um cenarioController
@@ -54,7 +62,8 @@ public class CenarioController {
 		this.idBase = 1;
 		this.caixa = caixa;
 		this.taxa = taxa;
-		this.cenarios = new TreeMap<>();
+		this.cenarios = new HashMap<>();
+		this.cenariosOrdendos = new ArrayList<>();
 	}
 
 	/**
@@ -351,6 +360,29 @@ public class CenarioController {
 
 		Cenario cenario = this.cenarios.get(idCenario);
 		return cenario.alterarSeguro(aposta, taxa);
+	}
+
+	public void alterarOrdem(String ordem) {
+		this.cenariosOrdendos =  new ArrayList<>(this.cenarios.values());
+		if(ordem.equals("nome")) {
+			Collections.sort(this.cenariosOrdendos, new ComparaNome());
+		}else if(ordem.equals("apostas")) {
+			Collections.sort(this.cenariosOrdendos, new ComparaApostas());
+		}
+		
+		
+	}
+
+	public String exibirCenarioOrdenado(int cenario) {
+		if(cenario <= 0) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario invalido");
+		if(this.cenariosOrdendos.isEmpty()) {
+			return this.exibirCenario(cenario);
+		}else {
+			if(cenario>=this.cenariosOrdendos.size()) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario nao cadastrado");
+			return this.cenariosOrdendos.get(cenario-1).toString();
+		}
+		
+			
 	}
 
 }

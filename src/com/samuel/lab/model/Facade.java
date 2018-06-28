@@ -173,7 +173,7 @@ public class Facade implements SistemadeApostas {
 	public static void main(String[] args) {
 
 		args = new String[] { "com.samuel.lab.model.Facade", "easy_accept/us1_test.txt", "easy_accept/us2_test.txt",
-				"easy_accept/us3_test.txt", "easy_accept/us4_test.txt","easy_accept/us5_test.txt","easy_accept/us6_test.txt" };
+				"easy_accept/us3_test.txt", "easy_accept/us4_test.txt","easy_accept/us5_test.txt","easy_accept/us6_test.txt","easy_accept/us7_test.txt" };
 		EasyAccept.main(args);
 
 	}
@@ -241,11 +241,19 @@ public class Facade implements SistemadeApostas {
 	 */
 	@Override
 	public int alterarSeguroTaxa(int cenario, int aposta, double taxa) {
-		try {
+		
 		return this.cenarioController.alterarSeguro(cenario,aposta,taxa);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 1;
+	
+	}
+
+	@Override
+	public void alterarOrdem(String ordem) {
+		this.cenarioController.alterarOrdem(ordem);
+		
+	}
+
+	@Override
+	public String exibirCenarioOrdenado(int cenario) {
+		return this.cenarioController.exibirCenarioOrdenado(cenario);
 	}
 }
