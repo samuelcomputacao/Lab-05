@@ -164,8 +164,16 @@ public interface SistemadeApostas {
 	 */
 	public int alterarSeguroTaxa(int cenario, int apostaAssegurada, double taxa);
 	
+	/**
+	 * Método responsável por alterar o ordem a ordenação dos cenários cadastrados
+	 * @param ordem : Representa qual a ordem que será importa aos cenários 
+	 */
 	public void alterarOrdem(String ordem);
 	
+	/**
+	 * Mérotodo responsável por listar um cenário ordenado
+	 * @param cenario : id do cenário que será exbibido 
+	 */
 	public String exibirCenarioOrdenado(int cenario);
 	
 

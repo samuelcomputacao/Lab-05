@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import com.samuel.lab.comparadores.ComparaApostas;
 import com.samuel.lab.comparadores.ComparaNome;
@@ -362,23 +361,35 @@ public class CenarioController {
 		return cenario.alterarSeguro(aposta, taxa);
 	}
 
+	/**
+	 * Método responsável por alterar o ordem a ordenação dos cenários cadastrados
+	 * @param ordem : Representa qual a ordem que será importa aos cenários 
+	 */
 	public void alterarOrdem(String ordem) {
+		if(ordem== null || ordem.trim().isEmpty()) throw new CampoInvalidoException("Erro ao alterar ordem: Ordem nao pode ser vazia ou nula");
 		this.cenariosOrdendos =  new ArrayList<>(this.cenarios.values());
 		if(ordem.equals("nome")) {
 			Collections.sort(this.cenariosOrdendos, new ComparaNome());
 		}else if(ordem.equals("apostas")) {
 			Collections.sort(this.cenariosOrdendos, new ComparaApostas());
+		}else if(ordem.equals("cadastro")) {
+			this.cenariosOrdendos = new ArrayList<>();
+		}else{
+			throw new CampoInvalidoException("Erro ao alterar ordem: Ordem invalida");
 		}
-		
-		
 	}
 
+	/**
+	 * Mérotodo responsável por listar um cenário ordenado
+	 * @param cenario : id do cenário que será exbibido 
+	 */
 	public String exibirCenarioOrdenado(int cenario) {
 		if(cenario <= 0) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario invalido");
 		if(this.cenariosOrdendos.isEmpty()) {
+			if(!this.cenarios.containsKey(cenario)) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario nao cadastrado");
 			return this.exibirCenario(cenario);
 		}else {
-			if(cenario>=this.cenariosOrdendos.size()) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario nao cadastrado");
+			if(cenario>this.cenariosOrdendos.size()) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario nao cadastrado");
 			return this.cenariosOrdendos.get(cenario-1).toString();
 		}
 		
