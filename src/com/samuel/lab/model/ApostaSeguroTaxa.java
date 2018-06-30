@@ -79,4 +79,8 @@ public class ApostaSeguroTaxa extends ApostaAssegurada{
 		return this.taxa;
 	}
 	
+	public double getSeguro() {
+		return super.getValor() * this.taxa;
+	}
+
 }

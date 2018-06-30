@@ -64,7 +64,7 @@ public class CenarioControllerTest {
 	public void testExibirCenarioFilalizadoOcorrido() {
 		this.cenarioController.cadastrarCenario("Brasil Hexa");
 		this.cenarioController.fecharAposta(1, true);
-		assertEquals("1 - Brasil Hexa - finalizado (ocorreu)", this.cenarioController.exibirCenario(1));
+		assertEquals("1 - Brasil Hexa - Finalizado (ocorreu)", this.cenarioController.exibirCenario(1));
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class CenarioControllerTest {
 	public void testExibirCenarioFilalizadoNaoOcorrido() {
 		this.cenarioController.cadastrarCenario("Brasil Hexa");
 		this.cenarioController.fecharAposta(1, false);
-		assertEquals("1 - Brasil Hexa - finalizado (n ocorreu)", this.cenarioController.exibirCenario(1));
+		assertEquals("1 - Brasil Hexa - Finalizado (n ocorreu)", this.cenarioController.exibirCenario(1));
 	}
 	
 	/**
@@ -237,15 +237,11 @@ public class CenarioControllerTest {
 	@Test
 	public void testExibirApostas() {
 		String str = "Samuel - R$1,00 - N VAI ACONTECER" + System.lineSeparator();
-		str += "Maria - R$1,00 - VAI ACONTECER" + System.lineSeparator();
-		str += "Samuel - R$1,00 - VAI ACONTECER - ASSEGURADA (VALOR) - R$ 30,00" + System.lineSeparator();
 		str += "Samuel - R$1,00 - VAI ACONTECER - ASSEGURADA (TAXA) - R$ 30,00";
 		
 		this.cenarioController.cadastrarCenario("Brasil Hexa");
 		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "N VAI ACONTECER");
-		this.cenarioController.cadastrarAposta(1, "Maria", 100, "VAI ACONTECER");
 		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "VAI ACONTECER", 0.3, 100);
-		this.cenarioController.cadastrarAposta(1, "Samuel", 100, "VAI ACONTECER", 30, 100);
 		assertEquals(str, this.cenarioController.exibirApostas(1));
 		
 	}
@@ -346,15 +342,6 @@ public class CenarioControllerTest {
 	public void testGetCaixa() {
 		assertEquals(100, this.cenarioController.getCaixa());
 	}
-	
-//	@Test
-//	public void testApostarSeguroTaxa() {
-//		this.cenarioController.cadastrarCenario("Brasil Hexa");
-//		this.cenarioController.cadastrarApostaSeguraTaxa(1, "Samuel", 100, "VAI ACONTECER", 0.3, 100);
-//		String str = "Samuel - R$1,00 - VAI ACONTECER - ASSEGURADA (TAXA) - R$ 30,00";
-//		assertEquals(str,this.cenarioController.
-//		System.out.println(this.cenarioController.exibirApostas(1));
-//		
-//	}
+
 
 }

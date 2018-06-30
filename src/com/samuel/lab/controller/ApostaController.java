@@ -9,6 +9,7 @@ import com.samuel.lab.exception.ApostaNaoCadastradaException;
 import com.samuel.lab.exception.CampoInvalidoException;
 import com.samuel.lab.exception.CenarioSemApostasException;
 import com.samuel.lab.model.Aposta;
+import com.samuel.lab.model.ApostaAssegurada;
 import com.samuel.lab.model.ApostaSeguroTaxa;
 import com.samuel.lab.model.ApostaSeguroValor;
 
@@ -20,24 +21,16 @@ public class ApostaController {
 	private List<Aposta> apostas;
 
 	/**
-	 * Representa todas as apostas asseguradas por um valor
+	 * Representa todas as apostas asseguradas
 	 */
-	private Map<Integer, ApostaSeguroValor> apostasSeguroValor;
+
+	private Map<Integer, ApostaAssegurada> apostasAsseguradas;
 
 	/**
-	 * Representa todas as apostas asseguradas por um taxa
+	 * Um inteiro usado como base para o cadastramento de apostas asseguradas
 	 */
-	private Map<Integer, ApostaSeguroTaxa> apostasSeguroTaxa;
-
-	/**
-	 * Um inteiro usado como base para o cadastramento de apostas asseguradas por valor
-	 */
-	private int idBaseValor;
+	private int idBaseAsseguradas;
 	
-	/**
-	 * Um inteiro usado como base para o cadastramento de apostas asseguradas por uma taxa
-	 */
-	private int idBaseTaxa;
 	
 	/**
 	 * Representa o valor total das apostas cadastradas 
@@ -54,10 +47,8 @@ public class ApostaController {
 	 */
 	public ApostaController() {
 		this.apostas = new ArrayList<>();
-		this.apostasSeguroTaxa = new HashMap<>();
-		this.apostasSeguroValor = new HashMap<>();
-		this.idBaseTaxa = 1;
-		this.idBaseValor = 1;
+		this.apostasAsseguradas = new HashMap<>();
+		this.idBaseAsseguradas = 1;
 		this.valorTotal =0;
 	}
 	
@@ -110,20 +101,8 @@ public class ApostaController {
 			}
 
 		}
-		for (ApostaSeguroValor aposta : this.apostasSeguroValor.values()) {
-			if (aposta.isAcontece()) {
-				if (!ocorreu) {
-					valor += aposta.getValor();
-				}
-			} else {
-				if (ocorreu) {
-					valor += aposta.getValor();
-				}
-			}
-
-		}
-
-		for (ApostaSeguroTaxa aposta : this.apostasSeguroTaxa.values()) {
+		
+		for(ApostaAssegurada aposta : this.apostasAsseguradas.values()) {
 			if (aposta.isAcontece()) {
 				if (!ocorreu) {
 					valor += aposta.getValor();
@@ -157,20 +136,8 @@ public class ApostaController {
 				}
 			}
 		}
-
-		for (ApostaSeguroValor aposta : this.apostasSeguroValor.values()) {
-			if (aposta.isAcontece()) {
-				if (!ocorreu) {
-					valor += aposta.getValor();
-				}
-			} else {
-				if (ocorreu) {
-					valor += aposta.getValor();
-				}
-			}
-		}
-
-		for (ApostaSeguroTaxa aposta : this.apostasSeguroTaxa.values()) {
+		
+		for(Aposta aposta : this.apostasAsseguradas.values()) {
 			if (aposta.isAcontece()) {
 				if (!ocorreu) {
 					valor += aposta.getValor();
@@ -201,7 +168,7 @@ public class ApostaController {
 	 * @return um String representando todas as Strings do cenário
 	 */
 	public String exibir() {
-		if (this.apostas.isEmpty() && this.apostasSeguroTaxa.isEmpty() && this.apostasSeguroValor.isEmpty())
+		if (this.apostas.isEmpty() && this.apostasAsseguradas.isEmpty())
 			throw new CenarioSemApostasException();
 		String retorno = "";
 		for (Aposta aposta : this.apostas) {
@@ -211,14 +178,7 @@ public class ApostaController {
 				retorno += System.lineSeparator() + aposta.toString();
 			}
 		}
-		for (ApostaSeguroValor aposta : this.apostasSeguroValor.values()) {
-			if (retorno.isEmpty()) {
-				retorno = aposta.toString();
-			} else {
-				retorno += System.lineSeparator() + aposta.toString();
-			}
-		}
-		for (ApostaSeguroTaxa aposta : this.apostasSeguroTaxa.values()) {
+		for(Aposta aposta : this.apostasAsseguradas.values()) {
 			if (retorno.isEmpty()) {
 				retorno = aposta.toString();
 			} else {
@@ -248,19 +208,30 @@ public class ApostaController {
 	public int cadastrar(String apostador, int valor, String previsao, int seguro, int custo) {
 		if (previsao == null || previsao.trim().isEmpty())
 			throw new CampoInvalidoException("Erro no cadastro de aposta: Previsao nao pode ser vazia ou nula");
-		ApostaSeguroValor aposta = null;
+		
+		boolean previsaoBool = verificaPrevisao(previsao);
+		ApostaSeguroValor aposta  = new ApostaSeguroValor(apostador, valor, previsaoBool, seguro, custo);
+		//this.apostasSeguroValor.put(this.idBaseValor, aposta);
+		this.apostasAsseguradas.put(this.idBaseAsseguradas, aposta);
+		this.idBaseAsseguradas++;
+		this.valorTotal+= aposta.getValor();
+		this.quantidadeApostas++;
+		return this.idBaseAsseguradas - 1;
+	}
+
+	/**
+	 * Método responsável por vrificar a previsão de uma aposta a partir de ema String
+	 * @param previsao :  Previsão em forma de uma String
+	 * @return Um valor bolleano representando a previsão. 
+	 */
+	private boolean verificaPrevisao(String previsao) {
 		if (previsao.equals("VAI ACONTECER")) {
-			aposta = new ApostaSeguroValor(apostador, valor, true, seguro, custo);
+			return true;
 		} else if (previsao.equals("N VAI ACONTECER")) {
-			aposta = new ApostaSeguroValor(apostador, valor, false, seguro, custo);
+			return  false;
 		} else {
 			throw new CampoInvalidoException("Erro no cadastro de aposta: Previsao invalida");
 		}
-		this.apostasSeguroValor.put(this.idBaseValor, aposta);
-		this.idBaseValor++;
-		this.valorTotal+= aposta.getValor();
-		this.quantidadeApostas++;
-		return this.idBaseValor - 1;
 	}
 	
 	/**
@@ -284,10 +255,11 @@ public class ApostaController {
 			throw new CampoInvalidoException("Erro no cadastro de aposta: Previsao invalida");
 		}
 		this.valorTotal+= aposta.getValor();
-		this.apostasSeguroTaxa.put(this.idBaseTaxa, aposta);
-		this.idBaseTaxa++;
+		//this.apostasSeguroTaxa.put(this.idBaseTaxa, aposta);
+		this.apostasAsseguradas.put(this.idBaseAsseguradas, aposta);
+		this.idBaseAsseguradas++;
 		this.quantidadeApostas++;
-		return idBaseTaxa - 1;
+		return idBaseAsseguradas - 1;
 	}
 
 	/**
@@ -299,12 +271,12 @@ public class ApostaController {
 	public int alterar(int idAposta, int seguro) {
 		if (idAposta <= 0)
 			throw new CampoInvalidoException("Erro ao alterar a aposta: Aposta inválida");
-		if (!this.apostasSeguroTaxa.containsKey(idAposta))
+		if (!this.apostasAsseguradas.containsKey(idAposta))
 			throw new ApostaNaoCadastradaException("Erro ao alterar a aposta: Aposta não cadastrada");
-		ApostaSeguroTaxa aposta = this.apostasSeguroTaxa.get(idAposta);
+		ApostaAssegurada aposta =  this.apostasAsseguradas.get(idAposta);
 		String previsao = aposta.isAcontece()?"VAI ACONTECER":"N VAI ACONTECER";
-		this.apostasSeguroTaxa.remove(idAposta);
-		return this.cadastrar(aposta.getApostador(), aposta.getValor(), previsao, seguro, aposta.getCusto());
+		this.apostasAsseguradas.put(idAposta, new ApostaSeguroValor(aposta.getApostador(), aposta.getValor(), this.verificaPrevisao(previsao), seguro, aposta.getCusto()));
+		return idAposta;
 	}
 
 	/**
@@ -316,12 +288,13 @@ public class ApostaController {
 	public int alterar(int idAposta, double taxa) {
 		if (idAposta <= 0)
 			throw new CampoInvalidoException("Erro ao alterar a aposta: Aposta inválida");
-		if (!this.apostasSeguroValor.containsKey(idAposta))
+		if (!this.apostasAsseguradas.containsKey(idAposta))
 			throw new ApostaNaoCadastradaException("Erro ao alterar a aposta: Aposta não cadastrada");
-		ApostaSeguroValor aposta = this.apostasSeguroValor.get(idAposta);
+		ApostaAssegurada aposta = this.apostasAsseguradas.get(idAposta);
 		String previsao = aposta.isAcontece()?"VAI ACONTECER":"N VAI ACONTECER";
-		this.apostasSeguroValor.remove(idAposta);
-		return this.cadastrar(aposta.getApostador(), aposta.getValor(), previsao, taxa, aposta.getCusto());
+		this.apostasAsseguradas.remove(idAposta);
+		this.apostasAsseguradas.put(idAposta, new ApostaSeguroTaxa(aposta.getApostador(), aposta.getValor(), this.verificaPrevisao(previsao), taxa, aposta.getCusto()));
+		return idAposta;
 	}
 
 	/**
@@ -330,23 +303,13 @@ public class ApostaController {
 	 */
 	public int seguroPerdedoras(boolean ocorreu) {
 		int retorno = 0;
-		for (ApostaSeguroValor aposta : this.apostasSeguroValor.values()) {
+		for(ApostaAssegurada aposta : this.apostasAsseguradas.values()) {
 			if (aposta.isAcontece()) {
 				if (!ocorreu)
 					retorno += aposta.getSeguro();
 			} else {
 				if (ocorreu)
 					retorno += aposta.getSeguro();
-			}
-		}
-		for (ApostaSeguroTaxa aposta : this.apostasSeguroTaxa.values()) {
-			if (aposta.isAcontece()) {
-				if (!ocorreu)
-					retorno += (aposta.getTaxa() * aposta.getValor());
-			} else {
-				if (ocorreu) {
-					retorno += (aposta.getTaxa() * aposta.getValor());
-				}
 			}
 		}
 		return retorno;
@@ -358,10 +321,7 @@ public class ApostaController {
 	 */
 	public int getCustos() {
 		int custos = 0;
-		for(ApostaSeguroValor aposta : this.apostasSeguroValor.values()) {
-			custos += aposta.getCusto();
-		}
-		for(ApostaSeguroTaxa aposta : this.apostasSeguroTaxa.values()) {
+		for(ApostaAssegurada aposta : this.apostasAsseguradas.values()) {
 			custos += aposta.getCusto();
 		}
 		return custos;

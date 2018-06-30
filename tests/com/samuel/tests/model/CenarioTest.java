@@ -139,7 +139,7 @@ public class CenarioTest {
 	@Test
 	public void testToStringFinalizadoOcorrido() {
 		this.cenario.ocorrer(true);
-		assertEquals("1 - Brasil Hexa - finalizado (ocorreu)", this.cenario.toString());
+		assertEquals("1 - Brasil Hexa - Finalizado (ocorreu)", this.cenario.toString());
 	}
 	
 	/**
@@ -148,7 +148,7 @@ public class CenarioTest {
 	@Test
 	public void testToStringFinalizadoNaoOcorrido() {
 		this.cenario.ocorrer(false);
-		assertEquals("1 - Brasil Hexa - finalizado (n ocorreu)", this.cenario.toString());
+		assertEquals("1 - Brasil Hexa - Finalizado (n ocorreu)", this.cenario.toString());
 	}
 
 	/**

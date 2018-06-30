@@ -34,4 +34,7 @@ public abstract class ApostaAssegurada extends Aposta {
 	public int getCusto() {
 		return this.custo;
 	}
+	
+	public abstract double getSeguro();
+	
 }

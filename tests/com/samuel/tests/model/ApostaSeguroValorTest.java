@@ -112,7 +112,7 @@ public class ApostaSeguroValorTest {
 	 */
 	@Test
 	public void testGetSeguro() {
-		assertEquals(200, this.aposta.getSeguro());
+		assertTrue(200 == this.aposta.getSeguro());
 	}
 	
 	/**

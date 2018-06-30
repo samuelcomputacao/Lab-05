@@ -119,17 +119,11 @@ public class ApostaControllerTest {
 	public void testExibir() {
 		this.apostaController.cadastrar("Maria", 1000, "VAI ACONTECER");
 		this.apostaController.cadastrar("Samuel", 2000, "VAI ACONTECER");
-		this.apostaController.cadastrar("Samuel", 100, "VAI ACONTECER", 0.4, 200);
-		this.apostaController.cadastrar("Samuel", 100, "VAI ACONTECER", 500, 200);
-		this.apostaController.cadastrar("Samuel", 100, "N VAI ACONTECER", 500, 200);
 		
 		String str = "Maria - R$10,00 - VAI ACONTECER" + System.lineSeparator()
-			+ "Samuel - R$20,00 - VAI ACONTECER" + System.lineSeparator()
-			+ "Samuel - R$1,00 - VAI ACONTECER - ASSEGURADA (VALOR) - R$ 500,00" + System.lineSeparator()
-			+ "Samuel - R$1,00 - N VAI ACONTECER - ASSEGURADA (VALOR) - R$ 500,00" + System.lineSeparator()
-			+ "Samuel - R$1,00 - VAI ACONTECER - ASSEGURADA (TAXA) - R$ 40,00";
-
+			+ "Samuel - R$20,00 - VAI ACONTECER";
 		assertEquals(str,this.apostaController.exibir());
+		
 	}
 
 	/**
@@ -169,6 +163,24 @@ public class ApostaControllerTest {
 	public void testAlterarSeguroInvalido() {
 		this.apostaController.cadastrar("Samuel", 100, "N VAI ACONTECER", 50.80, 200);
 		this.apostaController.alterar(1, 0);
+	}
+	
+	/**
+	 * Testa a alteração de uma aposta de seguro taxa com a aposta invalida
+	 */
+	@Test(expected = CampoInvalidoException.class)
+	public void testAlterarApostaTaxaInvalida() {
+		this.apostaController.cadastrar("Samuel", 100, "N VAI ACONTECER", 50.80, 200);
+		this.apostaController.alterar(-10, 0.9);
+	}
+	
+	/**
+	 * Testa a alteração de uma aposta de seguro taxa com a aposta invalida
+	 */
+	@Test(expected = CampoInvalidoException.class)
+	public void testAlterarApostaValorInvalida() {
+		this.apostaController.cadastrar("Samuel", 100, "N VAI ACONTECER", 50.80, 200);
+		this.apostaController.alterar(-10, 90);
 	}
 
 	/**

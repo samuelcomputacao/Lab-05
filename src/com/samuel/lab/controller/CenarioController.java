@@ -258,7 +258,7 @@ public class CenarioController {
 			}
 			custo += c.getCustosApostas();
 		}
-		return (this.caixa - bonus - seguro) + caixasCenarios + custo;
+		return (this.caixa - bonus - seguro) + caixasCenarios+ custo;
 	}
 
 	/**

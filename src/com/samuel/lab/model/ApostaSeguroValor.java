@@ -72,7 +72,7 @@ public class ApostaSeguroValor extends ApostaAssegurada{
 	 * Método responsável por recuperar o valor do seguro da aposta
 	 * @return o valor do seguro da aposta
 	 */
-	public int getSeguro() {
+	public double getSeguro() {
 		return this.seguro;
 	}
 	
