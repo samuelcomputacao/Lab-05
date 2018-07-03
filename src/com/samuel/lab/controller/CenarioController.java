@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.samuel.lab.comparadores.ComparaApostas;
-import com.samuel.lab.comparadores.ComparaNome;
+import com.samuel.lab.comparadores.ComparaCenario;
 import com.samuel.lab.exception.CampoInvalidoException;
 import com.samuel.lab.exception.CenarioNaoCadastradoException;
 import com.samuel.lab.exception.CenarioNaoEncerradoException;
@@ -19,7 +18,7 @@ import com.samuel.lab.model.Cenario;
  * @author Samuel Pereira de Vasconcelos
  *
  */
-public class CenarioController {
+public class CenarioController{
 
 	/**
 	 * Representa o caixa do sistema
@@ -41,8 +40,16 @@ public class CenarioController {
 	 */
 	private Map<Integer, Cenario> cenarios;
 	
+	/**
+	 * Representa os cenários de forma ordenada
+	 */
 	private List<Cenario> cenariosOrdendos;
-
+	
+	/**
+	 * Comparador utilizado para comparar os  cenários
+	 */
+	private ComparaCenario comparaCenario;
+	
 	/**
 	 * Método responsável por inicializar um cenarioController
 	 * 
@@ -63,6 +70,7 @@ public class CenarioController {
 		this.taxa = taxa;
 		this.cenarios = new HashMap<>();
 		this.cenariosOrdendos = new ArrayList<>();
+		this.comparaCenario = new ComparaCenario();
 	}
 
 	/**
@@ -368,15 +376,8 @@ public class CenarioController {
 	public void alterarOrdem(String ordem) {
 		if(ordem== null || ordem.trim().isEmpty()) throw new CampoInvalidoException("Erro ao alterar ordem: Ordem nao pode ser vazia ou nula");
 		this.cenariosOrdendos =  new ArrayList<>(this.cenarios.values());
-		if(ordem.equals("nome")) {
-			Collections.sort(this.cenariosOrdendos, new ComparaNome());
-		}else if(ordem.equals("apostas")) {
-			Collections.sort(this.cenariosOrdendos, new ComparaApostas());
-		}else if(ordem.equals("cadastro")) {
-			this.cenariosOrdendos = new ArrayList<>();
-		}else{
-			throw new CampoInvalidoException("Erro ao alterar ordem: Ordem invalida");
-		}
+		this.comparaCenario.setOrdem(ordem);
+		Collections.sort(this.cenariosOrdendos, this.comparaCenario);		
 	}
 
 	/**

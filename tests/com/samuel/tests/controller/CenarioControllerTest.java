@@ -323,7 +323,6 @@ public class CenarioControllerTest {
 	}
 	
 
-
 	/**
 	 * Testa o carregamento do rateio de um cenário não encerrado
 	 */
