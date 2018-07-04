@@ -16,6 +16,11 @@ public class ComparaCenario implements Comparator<Cenario>{
 	 * Ordem utilizada para a ordenação dos cenários
 	 */
 	private String ordem;
+	
+	
+	public ComparaCenario() {
+		this.ordem = "cadastro";
+	}
 
 	/**
 	 * Método responsável por comparar dois cenários de acordo com uma ordem específica.

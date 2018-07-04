@@ -40,10 +40,6 @@ public class CenarioController{
 	 */
 	private Map<Integer, Cenario> cenarios;
 	
-	/**
-	 * Representa os cenários de forma ordenada
-	 */
-	private List<Cenario> cenariosOrdendos;
 	
 	/**
 	 * Comparador utilizado para comparar os  cenários
@@ -69,7 +65,6 @@ public class CenarioController{
 		this.caixa = caixa;
 		this.taxa = taxa;
 		this.cenarios = new HashMap<>();
-		this.cenariosOrdendos = new ArrayList<>();
 		this.comparaCenario = new ComparaCenario();
 	}
 
@@ -375,9 +370,7 @@ public class CenarioController{
 	 */
 	public void alterarOrdem(String ordem) {
 		if(ordem== null || ordem.trim().isEmpty()) throw new CampoInvalidoException("Erro ao alterar ordem: Ordem nao pode ser vazia ou nula");
-		this.cenariosOrdendos =  new ArrayList<>(this.cenarios.values());
-		this.comparaCenario.setOrdem(ordem);
-		Collections.sort(this.cenariosOrdendos, this.comparaCenario);		
+		this.comparaCenario.setOrdem(ordem);		
 	}
 
 	/**
@@ -386,15 +379,11 @@ public class CenarioController{
 	 */
 	public String exibirCenarioOrdenado(int cenario) {
 		if(cenario <= 0) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario invalido");
-		if(this.cenariosOrdendos.isEmpty()) {
-			if(!this.cenarios.containsKey(cenario)) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario nao cadastrado");
-			return this.exibirCenario(cenario);
-		}else {
-			if(cenario>this.cenariosOrdendos.size()) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario nao cadastrado");
-			return this.cenariosOrdendos.get(cenario-1).toString();
-		}
+		if(cenario > this.cenarios.size()) throw new CampoInvalidoException("Erro na consulta de cenario ordenado: Cenario nao cadastrado");
+		List<Cenario> lista = new ArrayList<>(this.cenarios.values());
+		Collections.sort(lista,this.comparaCenario);
+		return lista.get(cenario-1).toString();
 		
-			
 	}
 
 }
